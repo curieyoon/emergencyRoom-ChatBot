@@ -65,7 +65,7 @@ function getXY(hospitals, addNum) {
     	.then(response => response.json())
     	.then(data => {
 			for (let j = 0; j < data.length; j++) {
-				if (data.documents[j].category_name === "의료,건강 > 병원 > 종합병원") or (data.documents[j].category_name === "의료,건강 > 병원 > 대학병원") {
+				if ((data.documents[j].category_name === "의료,건강 > 병원 > 종합병원") || (data.documents[j].category_name === "의료,건강 > 병원 > 대학병원")) {
 					hospitals_xy[i].name = data.documents[j].place_name;
         			hospitals_xy[i].x = data.documents[j].x;
 					hospitals_xy[i].y = data.documents[j].y;
@@ -76,6 +76,7 @@ function getXY(hospitals, addNum) {
     	})
 
 	}
+	AddressList = null;
     return hospitals_xy;
 	/*
 	hospitals_xy:
