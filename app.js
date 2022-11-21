@@ -1,11 +1,25 @@
+const Address = require('./Address.js');
 const express = require('express');
 const app = express();
+
+
+console.log(Address.getAddress('석수동길'));
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.get('',(req,res)=> {
     res.send('tset')
+})
+
+app.post('/hook', function(request,response){
+  var eventObj = request.body.events[0];
+
+  console.log("---------------",new Date(),"-----------------");
+  response.sendStatus(200);
+
+
+
 })
 
 

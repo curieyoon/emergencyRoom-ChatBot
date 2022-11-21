@@ -1,5 +1,7 @@
-import fetch from "node-fetch";
-globalThis.fetch = fetch;
+const { response } = require('express');
+const fetch = require('node-fetch')
+
+globalThis.fetch = fetch.fetch;
 
 var AddressList = new Array();
 
@@ -13,8 +15,9 @@ function getAddress(currQuery) {
     })
     .then(response => response.json())
     .then(data => {
+        console.log(response)
         AddressList = data.documents.map(({road_address})=>({road_address}));
-        // console.log(currAddress)
+        console.log(AddressList)
         return AddressList
     })
 }
