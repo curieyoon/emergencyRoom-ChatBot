@@ -12,8 +12,6 @@ queryParams += '&' + encodeURIComponent('SM_TYPE') + '=' + encodeURIComponent(''
 queryParams += '&' + encodeURIComponent('pageNo') + '=' + encodeURIComponent('1'); /* */
 queryParams += '&' + encodeURIComponent('numOfRows') + '=' + encodeURIComponent('10'); /* */
 
-console.log(queryParams);
-
 request({
     url: url + queryParams,
     method: 'GET'
