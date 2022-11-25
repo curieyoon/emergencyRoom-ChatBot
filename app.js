@@ -51,8 +51,9 @@ app.post('/hook', function (req, res) {
 });
 try {
     const option = {
-      key: fs.readFileSync('./rootca.key', 'utf8'),
-      cert: fs.readFileSync('./rootca.crt' ,'utf8'),
+        ca: fs.readFileSync('/etc/letsencrypt/live/' + domain +'/fullchain.pem'),
+        key: fs.readFileSync(path.resolve(process.cwd(), '/etc/letsencrypt/live/' + domain +'/privkey.pem'), 'utf8').toString(),
+        cert: fs.readFileSync(path.resolve(process.cwd(), '/etc/letsencrypt/live/' + domain +'/cert.pem'), 'utf8').toString(),
     };
   
     HTTPS.createServer(option, app).listen(sslport, () => {
