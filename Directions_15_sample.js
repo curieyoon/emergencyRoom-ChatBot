@@ -1,3 +1,5 @@
+const express= require('express');
+const app = express();
 var request = require('request');
 
 //필요한 주소 정보 (data 형식 확정 x )
@@ -6,10 +8,10 @@ let address = {
   "number" : 10,
   "hospital_data" :[
       {"name" : "병원명", "address" : "병원 주소", "x" : 129.075986, "y" : 35.179470},
-      {"name" : "병원명", "address" : "병원 주소", "x" : 127.1058342, "y" : 37.359708}
+      {"name" : "병원명", "address" : "병원 주소", "x" : 127.1058342, "y" : 37.359708},
+      {"name" : "병원명", "address" : "병원 주소", "x" : 126.1058342, "y" : 37.359708}
   ] 
 }
-
 
 var options = {
   'method': 'GET',
@@ -20,6 +22,8 @@ var options = {
     'X-NCP-APIGW-API-KEY': 'FhD45P91TxG2820MadrsiPOUjI6bQMJhddnHZIeI'
   }
 };
+
+
 
 request(options, function (error, response) {
   if (error) throw new Error(error);
