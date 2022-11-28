@@ -11,41 +11,85 @@ const sslport = 23023;
 const bodyParser = require('body-parser');
 const app = express();
 
+function main(eventObj,res){
+  request.post(
+    {
+        url: TARGET_URL,
+        headers: {
+            'Authorization': `Bearer ${TOKEN}`
+        },
+        json: {
+            "replyToken":eventObj.replyToken, //eventObj.replyToken
+            "messages":[
+                {
+                    "type": "text", // ①
+                    "text": "응급 상황인가요?",
+                    "quickReply": { // ②
+                      "items": [
+                        {
+                          "type": "action", // ③
+                          "action": {
+                            "type": "postback",
+                            "label": "네",
+                            "data": "action=two",
+                            "displayText": "네",
+                            "inputOption": "openKeyboard",
+                          }
+                        },
+                      ]
+                    }
+                  }
+            ],
+        }
+    },(error, response, body) => {
+
+    });
+
+res.sendStatus(200);
+}
+
+function find_current(eventObj,res){ //Two
+  request.post(
+    {
+        url: TARGET_URL,
+        headers: {
+            'Authorization': `Bearer ${TOKEN}`
+        },
+        json: {
+            "replyToken":eventObj.replyToken, //eventObj.replyToken
+            "messages":[
+                {
+                  "type": "text", // ①
+                  "text": "응급 상황인가요?",
+                    "type": "text", // ①
+                    "text": "현재있는 위치의 주소나 보이는 곳을 입력하세요.",
+
+              }
+            ],
+        }
+    },(error, response, body) => {
+
+    });
+
+res.sendStatus(200);
+}
 
 
 app.use(bodyParser.json());
 app.post('/hook', function (req, res) {
     var eventObj = req.body.events[0];
-    //var source = eventObj.source;
-    //var message = eventObj.message;
-    // request log
     console.log('======================', new Date() ,'======================');
-    console.log((Address.getAddress('석수동길')).road_address.address_name)
-    request.post(
-        {
-            url: TARGET_URL,
-            headers: {
-                'Authorization': `Bearer ${TOKEN}`
-            },
-            json: {
-                "replyToken":eventObj.replyToken, //eventObj.replyToken
-                "messages":[
-                    {
-                        "type":"text",
-                        "text":address
-                    },
-                    {
-                        "type":"text",
-                        "text":"맞나요?"
-                    }
-                ],
-                "status" : 1
-            }
-        },(error, response, body) => {
-            console.log(body)
-        });
-    
-    res.sendStatus(200);
+    console.log(eventObj)
+    if(eventObj.postback){
+
+      find_current(eventObj,res)
+
+
+    }
+    else{
+      find_current(eventObj,res)
+    }
+
 });
 
 
