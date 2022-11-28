@@ -10,36 +10,25 @@ const domain = "2019102158.oss2022chatbot.tk"
 const sslport = 23023;
 const bodyParser = require('body-parser');
 const app = express();
-
+var event_time =1
 function main(eventObj,res){
   request.post(
     {
         url: TARGET_URL,
         headers: {
-            'Authorization': `Bearer ${TOKEN}`
+            'Authorization': `Bearer ${TOKEN}`,
         },
         json: {
             "replyToken":eventObj.replyToken, //eventObj.replyToken
             "messages":[
                 {
-                    "type": "text", // ①
-                    "text": "응급 상황인가요?",
-                    "quickReply": { // ②
-                      "items": [
-                        {
-                          "type": "action", // ③
-                          "action": {
-                            "type": "postback",
-                            "label": "네",
-                            "data": "action=two",
-                            "displayText": "네",
-                            "inputOption": "openKeyboard",
-                          }
-                        },
-                      ]
-                    }
-                  }
-            ],
+                  "type": "text", // ①
+                  "text": "응급 상황인가요?"},
+                  {"type": "text",
+                  "text": "현재있는 위치의 주소나 보이는 곳을 입력하세요."},
+                  
+            
+                ],
         }
     },(error, response, body) => {
 
@@ -49,23 +38,24 @@ res.sendStatus(200);
 }
 
 function find_current(eventObj,res){ //Two
+  console.log(Address.getAddress(eventObj.message.text))
   request.post(
     {
         url: TARGET_URL,
         headers: {
-            'Authorization': `Bearer ${TOKEN}`
+            'Authorization': `Bearer ${TOKEN}`,
         },
         json: {
             "replyToken":eventObj.replyToken, //eventObj.replyToken
             "messages":[
                 {
                   "type": "text", // ①
-                  "text": "응급 상황인가요?",
-                    "type": "text", // ①
-                    "text": "현재있는 위치의 주소나 보이는 곳을 입력하세요.",
-
-              }
-            ],
+                  "text": "응급 상황인가요?"},
+                  {"type": "text",
+                  "text": "현재있는 위치의 주소나 보이는 곳을 입력하세요."},
+                  
+            
+                ],
         }
     },(error, response, body) => {
 
@@ -78,15 +68,13 @@ res.sendStatus(200);
 app.use(bodyParser.json());
 app.post('/hook', function (req, res) {
     var eventObj = req.body.events[0];
+    var headers = req.headers;
     console.log('======================', new Date() ,'======================');
-    console.log(eventObj)
-    if(eventObj.postback){
-
-      find_current(eventObj,res)
-
-
+    if(event_time==1){
+      main(eventObj,res)
+      event_time=2
     }
-    else{
+    else if (event_time ==2){
       find_current(eventObj,res)
     }
 
