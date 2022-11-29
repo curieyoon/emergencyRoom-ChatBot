@@ -6,22 +6,30 @@ globalThis.fetch = fetch.fetch;
 var AddressList = new Array();
 
 
-function getAddress(currQuery) {
-    fetch('https://dapi.kakao.com/v2/local/search/address.json?' + new URLSearchParams({
-     query: currQuery
-    }), {
-     method: "GET",
-     headers: {"Authorization": "KakaoAK c14234ba46c574c73715276c5644f397"}
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log(response)
-        AddressList = data.documents.map(({road_address})=>({road_address}));
-        console.log(AddressList)
-        return AddressList
-    })
+function getAddress(currQuery, cb = ()=> {}) {
+	setTimeout(function () {
+		fetch('https://dapi.kakao.com/v2/local/search/address.json?' + new URLSearchParams({
+			query: currQuery
+		}), {
+			method: "GET",
+			headers: { "Authorization": "KakaoAK c14234ba46c574c73715276c5644f397" }
+		})
+			.then(response => response.json())
+			.then(data => {
+				//console.log(response)
+				AddressList = data.documents.map(({ road_address }) => ({ road_address }));					
+				//console.log(AddressList)
+				cb(AddressList);
+			});
+			
+	},100)
 }
 
+/* 
+getAddress('석수동길', function (address) {
+	console.log(address[0].road_address.address_name);
+})
+*/
 
 
 
