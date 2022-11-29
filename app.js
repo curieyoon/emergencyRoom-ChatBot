@@ -48,11 +48,38 @@ function find_current(eventObj,res){ //Two
         json: {
             "replyToken":eventObj.replyToken, //eventObj.replyToken
             "messages":[
-                {
-                  "type": "text", // ①
-                  "text": "응급 상황인가요?"},
-                  {"type": "text",
-                  "text": "현재있는 위치의 주소나 보이는 곳을 입력하세요."},
+              {
+                "type": "location",
+                "title": "현재위치",
+                "address": "경기 안산시 단원구 석수동길",
+                "latitude": 37.3446767467006,
+                "longitude": 126.807581282114
+              },
+              {
+                "type": "template",
+                "altText": "This is a buttons template",
+                "template": {
+                  "type": "buttons",
+                  "text": "이곳이 맞나요?",
+                  "defaultAction": {
+                    "type": "uri",
+                    "label": "View detail",
+                    "uri": "http://example.com/page/123"
+                  },
+                  "actions": [
+                    {
+                      "type": "postback",
+                      "label": "네",
+                      "data": "action=buy&itemid=123"
+                    },
+                    {
+                      "type": "postback",
+                      "label": "아니요",
+                      "data": "action=add&itemid=123"
+                    },
+                  ]
+                }
+              }
                   
             
                 ],
@@ -76,6 +103,10 @@ app.post('/hook', function (req, res) {
     }
     else if (event_time ==2){
       find_current(eventObj,res)
+      event_time =3
+    }
+    else if (event_time ==3){
+      
     }
 
 });
