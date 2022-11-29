@@ -28,23 +28,35 @@ var options = {
 const ID = '12rhzhzq7g';
 const KEY = 'FhD45P91TxG2820MadrsiPOUjI6bQMJhddnHZIeI';
 
-function direction(data){
+async function direction(data){
     var num = data.number;
-    for (let i = 0; i< num;i++){
-      const _url = 'https://naveropenapi.apigw.ntruss.com/map-direction-15/v1/driving?start='+data.current_address.x+','+data.current_address.y+'&goal='+data.hospital_data[i].x+','+data.hospital_data[i].y+'&option=trafast';
-      options.url = _url;
-      request(options,function(error, respose){
-              var databody = JSON.parse(respose.body);
-              if (databody.code !=1){
-              console.log(databody)
-              var distance = databody.route.trafast[0].summary.distance/1000; // km 단위
-              var duration = databody.route.trafast[0].summary.duration/1000/60; // 분 단위dy
-              data.hospital_data[i].distance = distance;
-              data.hospital_data[i].duration = duration;}
-              })
+    var a = []
+    for (let i =0; i<num; i++){
+      a.push('https://naveropenapi.apigw.ntruss.com/map-direction-15/v1/driving?start='+data.current_address.x+','+data.current_address.y+'&goal='+data.hospital_data[i].x+','+data.hospital_data[i].y+'&option=trafast')
     }
+      console.log(a)
+      const PromiseList = a.map(async (e)=> {
+        const _url = 'https://naveropenapi.apigw.ntruss.com/map-direction-15/v1/driving?start='+data.current_address.x+','+data.current_address.y+'&goal='+data.hospital_data[i].x+','+data.hospital_data[i].y+'&option=trafast';
+        options.url = _url;
+          
+          return await request(options,function(error, respose){
+            console.log("11111111111111111")
+            var databody = JSON.parse(respose.body);
+            if (databody.code !=1){
+            console.log("2222222222222222")
+            console.log(databody)
+            var distance = databody.route.trafast[0].summary.distance/1000; // km 단위
+            var duration = databody.route.trafast[0].summary.duration/1000/60; // 분 단위dy
+            data.hospital_data[i].distance = distance;
+            console.log(data.hospital_data[i].distance)
+            data.hospital_data[i].duration = duration;}
+            })
+      })
+  
+      const result = await Promise.all(PromiseList)
+  
 
     
-    console.log("TTTTTTTTTTTTT")
-    return data}
+    console.log(result)
+    return result}
 console.log(direction(address))
