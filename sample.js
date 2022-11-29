@@ -3,7 +3,7 @@ const app = express();
 var request = require('request');
 
 //필요한 주소 정보 (data 형식 확정 x )
-let address = {
+let addresses = {
     "current_address" : { "address" : "현재 위치 주소", "x" : 127.1058342, "y" : 37.359708},
     "number" : 10,
     "hospital_data" :[
