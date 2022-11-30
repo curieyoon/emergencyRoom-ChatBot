@@ -1,5 +1,6 @@
-const Request=require('request')
 const fetch = require('node-fetch')
+Request = fetch.Request
+
 const addrJson = `{
   "current_address" : { "address" : "현재 위치 주소", "x" : 127.1058342, "y" : 37.359708},
   "number" : 2,
