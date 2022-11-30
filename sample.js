@@ -38,8 +38,8 @@ const fetchAPI = async () => {
       return fetch(request).then(async res => {
           const data = await res.json();
           if(data.route != undefined){
-          const distance = data.route?.trafast[0].summary.distance;
-          const duration = data.route?.trafast[0].summary.duration;
+          const distance = data.route.trafast[0].summary.distance;
+          const duration = data.route.trafast[0].summary.duration;
           addrData["hospital_data"][idx].distance = distance;
           addrData["hospital_data"][idx].duration = duration;}
       });
