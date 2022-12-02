@@ -5,54 +5,10 @@ globalThis.fetch = fetch.fetch;
 
 var AddressList = new Array();
 
-
-function getAddress(currQuery, cb = ()=> {}) {
-	setTimeout(function () {
-		fetch('https://dapi.kakao.com/v2/local/search/address.json?' + new URLSearchParams({
-			query: currQuery
-		}), {
-			method: "GET",
-			headers: { "Authorization": "KakaoAK c14234ba46c574c73715276c5644f397" }
-		})
-			.then(response => response.json())
-			.then(data => {
-				//console.log(response)
-				AddressList = data.documents.map(({ road_address }) => ({ road_address }));					
-				//console.log(AddressList)
-				cb(AddressList);
-			});
-			
-	},100)
-}
-
-/* 
-getAddress('석수동길', function (address) {
-	console.log(address[0].road_address.address_name);
-})
-*/
+require("dotenv").config( {path: "/home/ec2-user/prj/emergency_room_ChatBot/.env"} );
+const KAKAO_KEY = process.env.KAKAO_KEY;
 
 
-
-/*
-
-  move to Line
-
-var x; var y;
-var regions = new Array();
-
-
-// addressArray <- return value from function getAddress
-
-function selectAddress(addressArray, number) {
-	x = addressArray[number].road_address.x
-	y = addressArray[number].road_address.y
-	regions.region_1depth_name = addressArray[number].road_address.region_1depth_name;
-	regions.region_2depth_name = addressArray[number].road_address.region_2depth_name;
-	regions.region_3depth_name = addressArray[number].road_address.region_3depth_name;
-	
-}
-
-*/
 
 
 // hospitals: array from hospital API
@@ -71,7 +27,7 @@ function getXY(hospitals, addNum) {
 	 		category_group_code: "HP8"
    		 }), {
      		method: "GET",
-     		headers: {"Authorization": "KakaoAK c14234ba46c574c73715276c5644f397"}
+     		headers: {"Authorization": KAKAO_KEY}
 		})
     	.then(response => response.json())
     	.then(data => {
@@ -100,4 +56,4 @@ function getXY(hospitals, addNum) {
 	// for loop 다 돈 다음에 return하도록 수정해야함 (하실수 있는분?)
 }
 
-module.exports = {getAddress, getXY};
+module.exports = {getXY};
