@@ -1,19 +1,33 @@
-const Address = require('./Address.js');
+const address = require('./Address.js');
 const express = require('express');
 const request = require('request');
+
+
+const fetch = () => import('node-fetch').then(({default: fetch}) => fetch());
+require("dotenv").config( {path: "/home/ec2-user/prj/emergency_room_ChatBot/.env"} );
+const KAKAO_KEY = process.env.KAKAO_KEY;
+const TOKEN = process.env.CHANNEL_ACCESS_TOKEN;;
+const domain = process.env.MY_DOMAIN;
+const EMERGENCY_KEY = process.env.EMERGENCY_KEY;
+
+const KAKAO_URL = "https://dapi.kakao.com/v2/local/search/address.json?"
 const TARGET_URL = 'https://api.line.me/v2/bot/message/reply'
-const TOKEN = 'YK56BfHFgpILrxRk1FZrdcouFguf5CBA5qxM3zfDH6N9jR/cfPxVdK1P9vZHAk69mZDSlSkXNLy25pzqJbXrn3y76hwmH0Kiuvx3OadFYcuidWSp7VYAj4SqJSljv/q5KoYAOE2il8jmQkf4bQKvXQdB04t89/1O/w1cDnyilFU='
 const fs = require('fs');
 const path = require('path');
 const HTTPS = require('https');
-const domain = "2019102158.oss2022chatbot.tk"
 const sslport = 23023;
 const bodyParser = require('body-parser');
 const app = express();
-var event_time =1
+var event_time = 1
+var add_list = new Array();
+
+var add_index = 0;
+var confirmed = new Boolean(false);
+
 function main(eventObj,res){
   request.post(
-    {
+    {   
+       
         url: TARGET_URL,
         headers: {
             'Authorization': `Bearer ${TOKEN}`,
@@ -37,9 +51,35 @@ function main(eventObj,res){
 res.sendStatus(200);
 }
 
-function find_current(eventObj,res){ //Two
-  console.log(Address.getAddress(eventObj.message.text))
-  request.post(
+async function findme(eventObj, res) {
+
+  await request.get(
+    {
+      url: KAKAO_URL + new URLSearchParams(
+        {query: eventObj.message.text}
+      ),
+      headers: {
+          "Authorization": KAKAO_KEY
+      }
+
+    }, (error, response, body) =>{
+      if(!error && response.statusCode == 200) {
+        jbody = JSON.parse(body);
+        add_list = jbody.documents.map(({road_address})=>({road_address}));
+        
+        find_current(eventObj, res);  
+      }
+
+  
+  res.sendStatus(200);
+  }
+  )
+}
+
+
+async function find_current(eventObj,res){ 
+
+  await request.post(
     {
         url: TARGET_URL,
         headers: {
@@ -51,9 +91,9 @@ function find_current(eventObj,res){ //Two
               {
                 "type": "location",
                 "title": "현재위치",
-                "address": "경기 안산시 단원구 석수동길",
-                "latitude": 37.3446767467006,
-                "longitude": 126.807581282114
+                "address": add_list[add_index].road_address.address_name,
+                "longitude": parseFloat(add_list[add_index].road_address.x),
+                "latitude": parseFloat(add_list[add_index].road_address.y),
               },
               {
                 "type": "template",
@@ -84,28 +124,40 @@ function find_current(eventObj,res){ //Two
             
                 ],
         }
-    },(error, response, body) => {
-
-    });
+        
+      },(error, response) => {
+      console.log(error);
+      console.log(response.statusCode);
+      console.log(response.statusMessage);
+    }
+    
+    );
+  
 
 res.sendStatus(200);
 }
-
 
 app.use(bodyParser.json());
 app.post('/hook', function (req, res) {
     var eventObj = req.body.events[0];
     var headers = req.headers;
     console.log('======================', new Date() ,'======================');
+    console.log("event_time: ", event_time);
+    console.log(headers);
+    console.log(eventObj);
     if(event_time==1){
       main(eventObj,res)
       event_time=2
     }
-    else if (event_time ==2){
-      find_current(eventObj,res)
-      event_time =3
+    else if (event_time == 2) {
+      // var respon = 
+      findme(eventObj, res);
+      event_time = 3;
     }
-    else if (event_time ==3){
+    else if (event_time == 3){
+      
+    }
+    else if (event_time == 4){
       
     }
 

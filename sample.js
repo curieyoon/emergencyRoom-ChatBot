@@ -11,9 +11,9 @@ const addrJson = `{
 }`
 
 const addrData = JSON.parse(addrJson);
-
-const ID = '12rhzhzq7g';
-const KEY = 'FhD45P91TxG2820MadrsiPOUjI6bQMJhddnHZIeI';
+require("dotenv").config( {path: "/home/ec2-user/prj/emergency_room_ChatBot/.env"} );
+const ID = process.env.DIR_ID;
+const KEY = process.env.DIR_KEY;
 
 const data = {
   cur: addrData["current_address"],

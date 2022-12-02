@@ -2,8 +2,9 @@ const express= require('express');
 const app = express();
 const request = require('request')
 
-const ID = '12rhzhzq7g';
-const KEY = 'FhD45P91TxG2820MadrsiPOUjI6bQMJhddnHZIeI';
+require("dotenv").config( {path: "/home/ec2-user/prj/emergency_room_ChatBot/.env"} );
+const ID = process.env.DIR_ID;
+const KEY = process.env.DIR_KEY;
 
 app.post('/direction',function(req,res){
     let data_body = req.body;
