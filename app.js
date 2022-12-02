@@ -68,10 +68,13 @@ async function findme(eventObj, res) {
         add_list = jbody.documents.map(({road_address})=>({road_address}));
         
         find_current(eventObj, res);  
+        
       }
 
   
-  res.sendStatus(200);
+  }, ()=>{
+    // console.log("findme")
+    res.sendStatus(200);
   }
   )
 }
@@ -133,7 +136,7 @@ async function find_current(eventObj,res){
     
     );
   
-
+// console.log("findcurr");
 res.sendStatus(200);
 }
 
@@ -150,7 +153,6 @@ app.post('/hook', function (req, res) {
       event_time=2
     }
     else if (event_time == 2) {
-      // var respon = 
       findme(eventObj, res);
       event_time = 3;
     }
