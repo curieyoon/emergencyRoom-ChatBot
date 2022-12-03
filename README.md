@@ -14,14 +14,13 @@ EmergencyRoom-ChatBot is a chatbot service delivered on line-messenger platform.
 #### Find Emergency Room near you
 1. send any message to activate the EmergencyRoom-ChatBot.
 
-![activate](assets/1_activate.jpg)
+<img src="assets/1_activate.jpg" alt="1_activate" width="500"/>
+
 
 2. send your current location
 
-
-![activate](assets/2_place.jpg)
-
-------
+<img src="assets/2_place.jpg" alt="2_place" width="500"/>
+-
 
 
 ## For Developers
