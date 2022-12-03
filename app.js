@@ -67,7 +67,7 @@ async function again(eventObj, res) {
                   "type": "text", 
                   "text": "요청하신 주소를 찾을 수 없습니다."},
                   {"type": "text",
-                  "text": "도로명 주소로 다시 입력해 주세요. (예: 경희대학교 국제캠퍼스 → 덕영대로 1732"},
+                  "text": "정확한 주소 또는 장소 이름을 입력해 주세요. "},
                   
             
                 ],
