@@ -11,6 +11,7 @@ const domain = process.env.MY_DOMAIN;
 const EMERGENCY_KEY = process.env.EMERGENCY_KEY;
 
 const KAKAO_URL = "https://dapi.kakao.com/v2/local/search/address.json?"
+const KAKAO_PLACE_URL = "https://dapi.kakao.com/v2/local/search/keyword.json?"
 const TARGET_URL = 'https://api.line.me/v2/bot/message/reply'
 const fs = require('fs');
 const path = require('path');
@@ -51,6 +52,32 @@ function main(eventObj,res){
 res.sendStatus(200);
 }
 
+async function again(eventObj, res) {
+  request.post(
+    {   
+       
+        url: TARGET_URL,
+        headers: {
+            'Authorization': `Bearer ${TOKEN}`,
+        },
+        json: {
+            "replyToken":eventObj.replyToken,
+            "messages":[
+                {
+                  "type": "text", 
+                  "text": "요청하신 주소를 찾을 수 없습니다."},
+                  {"type": "text",
+                  "text": "도로명 주소로 다시 입력해 주세요. (예: 경희대학교 국제캠퍼스 → 덕영대로 1732"},
+                  
+            
+                ],
+        }
+    },(error, response, body) => {
+      event_time=2;
+      res.sendStatus(200);
+    });
+
+}
 async function findme(eventObj, res) {
 
   await request.get(
@@ -65,15 +92,44 @@ async function findme(eventObj, res) {
     }, (error, response, body) =>{
       if(!error && response.statusCode == 200) {
         jbody = JSON.parse(body);
-        add_list = jbody.documents.map(({road_address})=>({road_address}));
-        
-        find_current(eventObj, res);  
+        add_list = jbody.documents;
+        console.log(add_list);
+        if (add_list.length == 0) {
+          async function findagain(eventObj, res) {
+            await request.get(
+              {
+                url: KAKAO_PLACE_URL + new URLSearchParams(
+                  {query: eventObj.message.text}
+                ),
+                headers: {
+                    "Authorization": KAKAO_KEY
+                }
+          
+              }, (error, response, body) =>{
+                if(!error && response.statusCode == 200) {
+                  jbody = JSON.parse(body);
+                  add_list = new Array();
+                  add_list = jbody.documents;
+                  console.log("addlist PLACE !--- ", add_list)
+                  find_current(eventObj, res); 
+                }
+  
+          }, ()=>{
+            res.sendStatus(200);
+          }
+          )
+          };
+          
+          findagain(eventObj, res);
+
+          }
+        else {find_current(eventObj, res);  }
         
       }
 
   
   }, ()=>{
-    // console.log("findme")
+    console.log("sending status in findme");
     res.sendStatus(200);
   }
   )
@@ -81,62 +137,67 @@ async function findme(eventObj, res) {
 
 
 async function find_current(eventObj,res){ 
-
-  await request.post(
-    {
-        url: TARGET_URL,
-        headers: {
-            'Authorization': `Bearer ${TOKEN}`,
-        },
-        json: {
-            "replyToken":eventObj.replyToken, //eventObj.replyToken
-            "messages":[
-              {
-                "type": "location",
-                "title": "현재위치",
-                "address": add_list[add_index].road_address.address_name,
-                "longitude": parseFloat(add_list[add_index].road_address.x),
-                "latitude": parseFloat(add_list[add_index].road_address.y),
-              },
-              {
-                "type": "template",
-                "altText": "This is a buttons template",
-                "template": {
-                  "type": "buttons",
-                  "text": "이곳이 맞나요?",
-                  "defaultAction": {
-                    "type": "uri",
-                    "label": "View detail",
-                    "uri": "http://example.com/page/123"
-                  },
-                  "actions": [
-                    {
-                      "type": "postback",
-                      "label": "네",
-                      "data": "action=buy&itemid=123"
-                    },
-                    {
-                      "type": "postback",
-                      "label": "아니요",
-                      "data": "action=add&itemid=123"
-                    },
-                  ]
-                }
-              }
-                  
-            
-                ],
-        }
-        
-      },(error, response) => {
-      console.log(error);
-      console.log(response.statusCode);
-      console.log(response.statusMessage);
-    }
+  if (add_list.length == 0) {
+    console.log("no current address");
+    await again(eventObj, res);
     
-    );
+  } else {
+    await request.post(
+      {
+          url: TARGET_URL,
+          headers: {
+              'Authorization': `Bearer ${TOKEN}`,
+          },
+          json: {
+              "replyToken":eventObj.replyToken, 
+              "messages":[
+                {
+                  "type": "location",
+                  "title": "현재 위치",
+                  "address": add_list[add_index].address_name,
+                  "longitude": parseFloat(add_list[add_index].x),
+                  "latitude": parseFloat(add_list[add_index].y),
+                },
+                {
+                  "type": "template",
+                  "altText": "This is a buttons template",
+                  "template": {
+                    "type": "buttons",
+                    "text": "이곳이 맞나요?",
+                    "defaultAction": {
+                      "type": "uri",
+                      "label": "View detail",
+                      "uri": "http://example.com/page/123"
+                    },
+                    "actions": [
+                      {
+                        "type": "postback",
+                        "label": "네",
+                        "data": "action=buy&itemid=123"
+                      },
+                      {
+                        "type": "postback",
+                        "label": "아니요",
+                        "data": "action=add&itemid=123"
+                      },
+                    ]
+                  }
+                }
+                    
+              
+                  ],
+          }
+          
+        },(error, response) => {
+        // console.log(error);
+        // console.log(response.statusCode);
+        // console.log(response.statusMessage);
+      }
+      
+      );
+  }
+
   
-// console.log("findcurr");
 res.sendStatus(200);
 }
 
@@ -145,6 +206,7 @@ app.post('/hook', function (req, res) {
     var eventObj = req.body.events[0];
     var headers = req.headers;
     console.log('======================', new Date() ,'======================');
+
     console.log("event_time: ", event_time);
     console.log(headers);
     console.log(eventObj);
@@ -154,7 +216,7 @@ app.post('/hook', function (req, res) {
     }
     else if (event_time == 2) {
       findme(eventObj, res);
-      event_time = 3;
+      event_time=3;
     }
     else if (event_time == 3){
       
