@@ -35,13 +35,27 @@ function getspot(cap, city){
         else{
             var result = body
             var xmlTojson = convert.xml2json(result, {compact: true, spaces:0}); // xml 파일 json 변환
-            //console.log(xmlTojson)
+        
+            const test = JSON.parse(xmlTojson)
+            const items = test.response.body.items
             
-            console.log("----------------------")
-            const test = JSON.parse(xmlTojson) // json => 문자열
-            console.log(test.response.body.items[0])
-            //let words = test.split(','); // ','를 기준으로 분리
-            //console.log(words)
+            var emergencys = []
+            var i;
+            for(i = 0; i < items.item.length; i++){ // 병원 이름과 응급실 가능여부 확인 반복
+                const item = items.item[i]
+                const hospitalname = item.dutyName._text
+                const emergency = item.MKioskTy25._text
+                
+                emergencys.push({"병원이름": hospitalname, "가용여부":emergency});
+                
+            }
+            console.log(emergencys)
+            return emergencys;
+            console.log("----------------------")          
+            /* const test = JSON.stringify(xmlTojson) // json => 문자열
+            console.log(test)
+            let words = test.split(','); // ','를 기준으로 분리
+            console.log(words) */
 /*
             console.log("----------------------")
             console.log(test.response.body.items);
