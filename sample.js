@@ -1,44 +1,54 @@
-const express= require('express');
-const app = express();
-var request = require('request');
+const fetch = require('node-fetch')
+Request = fetch.Request
 
-//필요한 주소 정보 (data 형식 확정 x )
-let addresses = {
-    "current_address" : { "address" : "현재 위치 주소", "x" : 127.1058342, "y" : 37.359708},
-    "number" : 10,
-    "hospital_data" :[
-        {"name" : "병원명", "address" : "병원 주소", "x" : 129.075986, "y" : 35.179470, "distance" : 0, "duration" : 0},
-        {"name" : "병원명", "address" : "병원 주소", "x" : 127.1058342, "y" : 37.359708, "distance" : 0, "duration" : 0}
-    ]
+const addrJson = `{
+  "current_address" : { "address" : "현재 위치 주소", "x" : 127.1058342, "y" : 37.359708},
+  "number" : 2,
+  "hospital_data" :[
+      {"name" : "병원명", "address" : "병원 주소", "x" : 129.075986, "y" : 35.179470, "distance" : 0, "duration" : 0},
+      {"name" : "병원명", "address" : "병원 주소", "x" : 127.1058342, "y" : 37.359708, "distance" : 0, "duration" : 0}
+  ]
+}`
+
+const addrData = JSON.parse(addrJson);
+require("dotenv").config( {path: "/home/ec2-user/prj/emergency_room_ChatBot/.env"} );
+const ID = process.env.DIR_ID;
+const KEY = process.env.DIR_KEY;
+
+const data = {
+  cur: addrData["current_address"],
+  dist: addrData["hospital_data"].map((e)=> {return {x: e.x, y: e.y}})
 }
 
-var options = {
-  'method': 'GET',
-  'url': 'https://naveropenapi.apigw.ntruss.com/map-direction-15/v1/driving?start='+address.current_address.x+','
-            +address.current_address.y+'&goal='+address.hospital_data[0].x+','+address.hospital_data[0].y+'&option=trafast',
-  'headers': {
-    'X-NCP-APIGW-API-KEY-ID': '12rhzhzq7g',
-    'X-NCP-APIGW-API-KEY': 'FhD45P91TxG2820MadrsiPOUjI6bQMJhddnHZIeI'
-  }
-};
+const fetchAPI = async () => {    
+  const baseOption = {
+      'method': 'GET',
+      'headers': {
+      'X-NCP-APIGW-API-KEY-ID': '12rhzhzq7g',
+      'X-NCP-APIGW-API-KEY': 'FhD45P91TxG2820MadrsiPOUjI6bQMJhddnHZIeI'
+      },
+  };
 
-const ID = '12rhzhzq7g';
-const KEY = 'FhD45P91TxG2820MadrsiPOUjI6bQMJhddnHZIeI';
+  const promiseList = data.dist.map(async (dist, idx)=> {
+      const url = `https://naveropenapi.apigw.ntruss.com/map-direction-15/v1/driving?start=${data.cur.x},${data.cur.y}&goal=${dist.x},${dist.y}&option=trafast`;
+      
 
-function direction(data){
-    var num = data.number;
-    for (let i = 0; i< num;i++){
-    const _url = 'https://naveropenapi.apigw.ntruss.com/map-direction-15/v1/driving?start='+data.current_address.x+','+data.current_address.y+'&goal='+data.hospital_data[i].x+','+data.hospital_data[i].y+'&option=trafast';
-    options.url = _url;
+      let request = new Request(url, baseOption);
 
-    request(options,function(error, respose){
-            var databody = JSON.parse(respose.body);
-            var distance = databody.route.trafast[0].summary.distance/1000; // km 단위
-            var duration = databody.route.trafast[0].summary.duration/1000/60; // 분 단위dy
-            data.hospital_data[count].distance = distance;
-            data.hospital_data[count].duration = duration;
-            }
-        )
-    }
-    return data}
-console.log(direction(address))
+      return fetch(request).then(async res => {
+          const data = await res.json();
+          if(data.route != undefined){
+          const distance = data.route.trafast[0].summary.distance;
+          const duration = data.route.trafast[0].summary.duration;
+          addrData["hospital_data"][idx].distance = distance;
+          addrData["hospital_data"][idx].duration = duration;}
+      });
+  })   
+
+  Promise.all(promiseList).then(()=> {
+      console.log("fetch end");
+      console.log(addrData);
+  });
+}
+
+fetchAPI();
