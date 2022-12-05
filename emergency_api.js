@@ -5,6 +5,7 @@ const request = require('request');
 const convert = require("xml-js");
 
 var url = 'http://apis.data.go.kr/B552657/ErmctInfoInqireService/getSrsillDissAceptncPosblInfoInqire';
+var url2 = 'http://apis.data.go.kr/B552657/ErmctInfoInqireService/getEgytListInfoInqire';
 var queryParams = '?' + encodeURIComponent('serviceKey') + '=52tXHgaW46YUpGn9k0r3IQrduIl6kBOl3Ta8Idra1%2BpPMYhL4qVCDu9itW8FVbDtMF4f9LAT9NJXEx7pvEJv%2FQ%3D%3D'; /* Service Key*/
 
 /* 함수 만들기
@@ -62,6 +63,50 @@ async function getspot(cap, city){
         }
         }
     );
-}
+};
+
 module.exports = {getspot};
+//getspot("서울","송파구")
 // 함수 동작 test
+
+async function getspot_xy(cap, city){
+
+    queryParams += '&' + encodeURIComponent('Q0') + '=' + encodeURIComponent(cap); /* */
+    queryParams += '&' + encodeURIComponent('Q1') + '=' + encodeURIComponent(city); /* */
+    queryParams += '&' + encodeURIComponent('pageNo') + '=' + encodeURIComponent('1'); /* */
+    queryParams += '&' + encodeURIComponent('numOfRows') + '=' + encodeURIComponent('10'); /* */
+
+    request({
+        url: url2 + queryParams,
+        method: 'GET'
+    },await function (err, res, body) {
+        if(err){
+            console.log(`err => ${err}`)
+        }
+        else{
+            var result = body
+            var xmlTojson = convert.xml2json(result, {compact: true, spaces:0}); // xml 파일 json 변환
+        
+            const test = JSON.parse(xmlTojson)
+            var emergency_xy = []
+            var i
+            var length = test.response.body.items.item.length
+            console.log(length)
+            for(i = 0; i < length; i++){
+                let address_x = test.response.body.items.item[0].wgs84Lat._text;
+                let address_y = test.response.body.items.item[0].wgs84Lon._text;
+                let address_name = test.response.body.items.item[0].dutyName._text;
+                emergency_xy.push({"병원이름": address_name, "x":address_x, "y": address_y});
+                }
+            return emergency_xy;
+        }
+})}
+
+
+//getspot_xy("서울", "송파구")
+const test = async () =>{
+    const data =getspot_xy("서울", "송파구")
+    console.log(data)
+}
+
+test()

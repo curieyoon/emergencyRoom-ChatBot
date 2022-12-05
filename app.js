@@ -245,7 +245,7 @@ res.sendStatus(200);
 
 
 app.use(bodyParser.json());
-app.post('/hook', function (req, res) {
+app.post('/hook', async function (req, res) {
     var eventObj = req.body.events[0];
     var headers = req.headers;
     console.log('======================', new Date() ,'======================');
@@ -262,22 +262,29 @@ app.post('/hook', function (req, res) {
       event_time=3;
     }
     else if (event_time == 3){
-      let address_name = '경기 안산시 단원구 석수동길'
-      let a = address_name.split(' ')[0]
-      let b = address_name.split(' ')[1]
-      let hospital_list = emergency.getspot(a,b)
-      console.log(hospital_list);
-      if(eventObj.postback.data.action =='yes'){ 
+      let arr = eventObj.postback.data;
+      const string = arr.split("&&");
+      let action = string[0]
+      let current_adress_x = string[1]
+      let current_adress_y = string[2]
+      let current_address = string[3]
 
+      if(action =='yes'){ 
+        let a = current_address.split(' ')[0]
+        let b = current_address.split(' ')[1]
+        console.log(a,b)
+        let hospital_list = await emergency.getspot(a,b)
+        console.log(hospital_list);
+        event_time=4 
       }
-      else if (eventObj.postback.data.action == 'no'){
+      else if (action == 'no'){
         
       }
       else{
-
-
+        main(eventObj,res)
+        event_time=2
       }
-      event_time=4 
+
     }
     else if (event_time == 4){
     
