@@ -226,9 +226,13 @@ app.post('/hook', function (req, res) {
     }
     else if (event_time == 3){
       if(eventObj.postback.data =='yes'){
+        
+      }
+      else if (eventObj.postback.data == 'no'){
 
       }
       else{
+
 
       }
       event_time=4 
