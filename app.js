@@ -150,8 +150,7 @@ async function find_current(eventObj,res){
     var x = add_list[add_index].x
     var y = add_list[add_index].y
     var address_name = add_list[add_index].address_name
-    var string = "yes&&" + String(x) + "&&y="+String(y) +"&&address_name=" + String(address_name)
-    console.log("action=yes&&x=" + String(x) + "&&"+String(y) +"&&" + String(address_name))
+    var string = "yes&&" + String(x) + "&&"+String(y) +"&&" + String(address_name)
     console.log('--------------------------------------');
     await request.post(
       {
