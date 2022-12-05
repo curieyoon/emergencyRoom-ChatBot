@@ -1,7 +1,7 @@
 const address = require('./Address.js');
 const express = require('express');
 const request = require('request');
-
+const emergency = require('./emergency_api.js')
 
 const fetch = () => import('node-fetch').then(({default: fetch}) => fetch());
 require("dotenv").config( {path: "/home/ec2-user/emergencyRoom-ChatBot/.env"} );
@@ -18,12 +18,15 @@ const path = require('path');
 const HTTPS = require('https');
 const sslport = 23023;
 const bodyParser = require('body-parser');
+const { stringify } = require('querystring');
 const app = express();
 var event_time = 1
 var add_list = new Array();
 
 var add_index = 0;
 var confirmed = new Boolean(false);
+
+
 
 function main(eventObj,res){
   request.post(
@@ -143,6 +146,13 @@ async function find_current(eventObj,res){
     await again(eventObj, res);
     
   } else {
+    console.log('----------------------------------');
+    var x = add_list[add_index].x
+    var y = add_list[add_index].y
+    var address_name = add_list[add_index].address_name
+    var string = "yes&&" + String(x) + "&&y="+String(y) +"&&address_name=" + String(address_name)
+    console.log("action=yes&&x=" + String(x) + "&&"+String(y) +"&&" + String(address_name))
+    console.log('--------------------------------------');
     await request.post(
       {
           url: TARGET_URL,
@@ -174,17 +184,17 @@ async function find_current(eventObj,res){
                       {
                         "type": "postback",
                         "label": "네",
-                        "data": "yes"
+                        "data": string
                       },
                       {
                         "type": "postback",
                         "label": "아니요",
-                        "data": "no"
+                        "data": "action=no"
                       },
                       {
                         "type": "postback",
                         "label": "다시 입력하기",
-                        "data": "reset"
+                        "data": "action=reset"
                       },
                     ]
                   }
@@ -207,6 +217,34 @@ async function find_current(eventObj,res){
 res.sendStatus(200);
 }
 
+function yes_status(eventObj,res){
+  request.post(
+    {   
+       
+        url: TARGET_URL,
+        headers: {
+            'Authorization': `Bearer ${TOKEN}`,
+        },
+        json: {
+            "replyToken":eventObj.replyToken, //eventObj.replyToken
+            "messages":[
+                {
+                  "type": "text", // ①
+                  "text": "응급 상황인가요?"},
+                  {"type": "text",
+                  "text": "현재있는 위치의 주소나 보이는 곳을 입력하세요."},
+                  
+            
+                ],
+        }
+    },(error, response, body) => {
+
+    });
+  
+res.sendStatus(200);
+}
+
+
 app.use(bodyParser.json());
 app.post('/hook', function (req, res) {
     var eventObj = req.body.events[0];
@@ -224,11 +262,17 @@ app.post('/hook', function (req, res) {
       findme(eventObj, res);
       event_time=3;
     }
-    else if (event_time == 3){
-      if(eventObj.postback.data =='yes'){
-        
+    else if (event_time == 3)
+
+
+      if(eventObj.postback.data.action =='yes'){
+        let arr = eventObj.postback.data.current_location.address_name 
+        let a = arr.split(' ')[0]
+        let b = arr.split(' ')[1]
+        let hospital_list = emergency.getspot(a,b)
+        console.log(hospital_list);
       }
-      else if (eventObj.postback.data == 'no'){
+      else if (eventObj.postback.data.action == 'no'){
 
       }
       else{

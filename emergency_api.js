@@ -17,7 +17,7 @@ function getspot(cap, city){
 }
 */
 
-function getspot(cap, city){
+async function getspot(cap, city){
 
     queryParams += '&' + encodeURIComponent('STAGE1') + '=' + encodeURIComponent(cap); /* */
     queryParams += '&' + encodeURIComponent('STAGE2') + '=' + encodeURIComponent(city); /* */
@@ -25,7 +25,7 @@ function getspot(cap, city){
     queryParams += '&' + encodeURIComponent('pageNo') + '=' + encodeURIComponent('1'); /* */
     queryParams += '&' + encodeURIComponent('numOfRows') + '=' + encodeURIComponent('10'); /* */
 
-    request({
+    await request({
         url: url + queryParams,
         method: 'GET'
     }, function (err, res, body) {
@@ -64,6 +64,5 @@ function getspot(cap, city){
         }
     );
 }
-
+module.exports = {getspot};
 // 함수 동작 test
-getspot('서울특별시','강남구');
