@@ -4,7 +4,7 @@ const request = require('request');
 
 
 const fetch = () => import('node-fetch').then(({default: fetch}) => fetch());
-require("dotenv").config( {path: "/home/ec2-user/prj/emergency_room_ChatBot/.env"} );
+require("dotenv").config( {path: "/home/ec2-user/emergencyRoom-ChatBot/.env"} );
 const KAKAO_KEY = process.env.KAKAO_KEY;
 const TOKEN = process.env.CHANNEL_ACCESS_TOKEN;;
 const domain = process.env.MY_DOMAIN;
@@ -48,9 +48,10 @@ function main(eventObj,res){
     },(error, response, body) => {
 
     });
-
+  
 res.sendStatus(200);
 }
+  
 
 async function again(eventObj, res) {
   request.post(
@@ -173,12 +174,17 @@ async function find_current(eventObj,res){
                       {
                         "type": "postback",
                         "label": "네",
-                        "data": "action=buy&itemid=123"
+                        "data": "yes"
                       },
                       {
                         "type": "postback",
                         "label": "아니요",
-                        "data": "action=add&itemid=123"
+                        "data": "no"
+                      },
+                      {
+                        "type": "postback",
+                        "label": "다시 입력하기",
+                        "data": "reset"
                       },
                     ]
                   }
@@ -219,7 +225,13 @@ app.post('/hook', function (req, res) {
       event_time=3;
     }
     else if (event_time == 3){
-      
+      if(eventObj.postback.data =='yes'){
+
+      }
+      else{
+
+      }
+      event_time=4 
     }
     else if (event_time == 4){
       
