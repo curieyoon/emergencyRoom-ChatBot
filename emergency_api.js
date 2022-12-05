@@ -49,7 +49,6 @@ async function getspot(cap, city){
                 emergencys.push({"병원이름": hospitalname, "가용여부":emergency});
                 
             }
-            console.log(emergencys)
             return emergencys;
             console.log("----------------------")          
             /* const test = JSON.stringify(xmlTojson) // json => 문자열

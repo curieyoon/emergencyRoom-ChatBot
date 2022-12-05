@@ -261,18 +261,17 @@ app.post('/hook', function (req, res) {
       findme(eventObj, res);
       event_time=3;
     }
-    else if (event_time == 3)
+    else if (event_time == 3){
+      let address_name = '경기 안산시 단원구 석수동길'
+      let a = address_name.split(' ')[0]
+      let b = address_name.split(' ')[1]
+      let hospital_list = emergency.getspot(a,b)
+      console.log(hospital_list);
+      if(eventObj.postback.data.action =='yes'){ 
 
-
-      if(eventObj.postback.data.action =='yes'){
-        let arr = eventObj.postback.data.current_location.address_name 
-        let a = arr.split(' ')[0]
-        let b = arr.split(' ')[1]
-        let hospital_list = emergency.getspot(a,b)
-        console.log(hospital_list);
       }
       else if (eventObj.postback.data.action == 'no'){
-
+        
       }
       else{
 
@@ -281,7 +280,7 @@ app.post('/hook', function (req, res) {
       event_time=4 
     }
     else if (event_time == 4){
-      
+    
     }
 
 });
