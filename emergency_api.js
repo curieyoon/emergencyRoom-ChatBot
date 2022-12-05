@@ -18,7 +18,9 @@ function getspot(cap, city){
 }
 */
 
+
 async function getspot(cap, city){
+
 
     queryParams += '&' + encodeURIComponent('STAGE1') + '=' + encodeURIComponent(cap); /* */
     queryParams += '&' + encodeURIComponent('STAGE2') + '=' + encodeURIComponent(city); /* */
@@ -26,7 +28,9 @@ async function getspot(cap, city){
     queryParams += '&' + encodeURIComponent('pageNo') + '=' + encodeURIComponent('1'); /* */
     queryParams += '&' + encodeURIComponent('numOfRows') + '=' + encodeURIComponent('10'); /* */
 
+
     await request({
+
         url: url + queryParams,
         method: 'GET'
     }, function (err, res, body) {
@@ -46,11 +50,13 @@ async function getspot(cap, city){
                 const item = items.item[i]
                 const hospitalname = item.dutyName._text
                 const emergency = item.MKioskTy25._text
+
                 if (emergency == 'y'){ // emergeny 값이 'y'가 맞는지 한번 더 확인해주세요!
                     emergencys.push({"병원이름": hospitalname, "가용여부":emergency});
                 }
                 
             }
+
             return emergencys;
             console.log("----------------------")          
             /* const test = JSON.stringify(xmlTojson) // json => 문자열
@@ -64,6 +70,7 @@ async function getspot(cap, city){
         }
         }
     );
+
 };
 
 module.exports = {getspot};
@@ -106,4 +113,5 @@ async function getspot_xy(cap, city){
 
 
 getspot_xy("서울", "송파구")
+
 
