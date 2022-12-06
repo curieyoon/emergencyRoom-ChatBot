@@ -2,6 +2,7 @@ const address = require('./Address.js');
 const express = require('express');
 const request = require('request');
 const emergency = require('./emergency_api.js')
+const sample = require('./sample.js')
 
 const fetch = () => import('node-fetch').then(({default: fetch}) => fetch());
 require("dotenv").config( {path: "/home/ec2-user/emergencyRoom-ChatBot/.env"} );
@@ -25,8 +26,26 @@ var add_list = new Array();
 
 var add_index = 0;
 var confirmed = new Boolean(false);
+var hospital_list = []
+const delay = () => {
+  const randomDelay = Math.floor(Math.random() * 4) * 100
+  return new Promise(resolve => setTimeout(resolve, randomDelay))
+}
+const saveData = async (a,b,current_x,current_y,current_address,req, res) => {
+  try{
+      emergency.getspot_xy(a,b).then(async (res)=> {
+          let addrJson ={}
+          addrJson["current_address"] = {"address" : current_address, "x" : current_x,"y" : current_y}
+          addrJson["hospital_data"] = res 
+          sample.fetchAPI(addrJson)
 
 
+      })
+  }
+  catch(e){
+      console.log(e);
+  }
+}
 
 function main(eventObj,res){
   request.post(
@@ -217,6 +236,11 @@ res.sendStatus(200);
 }
 
 function yes_status(eventObj,res){
+  console.log(hospital_list)
+
+
+
+
   request.post(
     {   
        
@@ -273,9 +297,10 @@ app.post('/hook', async function (req, res) {
         let a = current_address.split(' ')[0]
         let b = current_address.split(' ')[1]
         console.log(a,b)
-        let hospital_list = await emergency.getspot(a,b)
+        saveData(a,b,current_adress_x,current_adress_y,current_address);
         console.log(hospital_list);
-        event_time=4 
+        event_time=4
+        yes_status(eventObj,res)
       }
       else if (action == 'no'){
         
@@ -287,7 +312,7 @@ app.post('/hook', async function (req, res) {
 
     }
     else if (event_time == 4){
-    
+      console.log(hospital_list);
     }
 
 });
@@ -311,3 +336,17 @@ try {
     console.log('[HTTPS] HTTPS 오류가 발생하였습니다. HTTPS 서버는 실행되지 않습니다.');
     console.log(error);
   }
+
+function arr_compare(arr, arr_xy){
+  var i;
+  var j = 0;
+  var hospital_xy_data = []
+  var length = arr_xy.length;
+  for( i = 0;i<length;i++){
+    if(arr[j].병원이름 == arr_xy[i].병원이름){
+        hospital_xy_data.push(arr_xy[i]);
+        j += 1;
+    }
+  }
+  return hospital_xy_data;
+}
