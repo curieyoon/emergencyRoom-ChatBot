@@ -1,10 +1,11 @@
 const address = require('./Address.js');
 const express = require('express');
 const request = require('request');
-
+const emergency = require('./emergency_api.js')
+const sample = require('./sample.js')
 
 const fetch = () => import('node-fetch').then(({default: fetch}) => fetch());
-require("dotenv").config( {path: "/home/ec2-user/prj/emergency_room_ChatBot/.env"} );
+require("dotenv").config( {path: "/home/ec2-user/emergencyRoom-ChatBot/.env"} );
 const KAKAO_KEY = process.env.KAKAO_KEY;
 const TOKEN = process.env.CHANNEL_ACCESS_TOKEN;;
 const domain = process.env.MY_DOMAIN;
@@ -18,12 +19,33 @@ const path = require('path');
 const HTTPS = require('https');
 const sslport = 23023;
 const bodyParser = require('body-parser');
+const { stringify } = require('querystring');
 const app = express();
 var event_time = 1
 var add_list = new Array();
 
 var add_index = 0;
 var confirmed = new Boolean(false);
+var hospital_list = []
+const delay = () => {
+  const randomDelay = Math.floor(Math.random() * 4) * 100
+  return new Promise(resolve => setTimeout(resolve, randomDelay))
+}
+const saveData = async (a,b,current_x,current_y,current_address,eventObj,line_res,req, res) => {
+  try{
+      emergency.getspot_xy(a,b).then(async (res)=> {
+          let addrJson ={}
+          addrJson["current_address"] = {"address" : current_address, "x" : current_x,"y" : current_y}
+          addrJson["hospital_data"] = res 
+          sample.fetchAPI(addrJson,eventObj,line_res)
+
+
+      })
+  }
+  catch(e){
+      console.log(e);
+  }
+}
 
 function main(eventObj,res){
   request.post(
@@ -48,9 +70,10 @@ function main(eventObj,res){
     },(error, response, body) => {
 
     });
-
+  
 res.sendStatus(200);
 }
+  
 
 async function again(eventObj, res) {
   request.post(
@@ -142,6 +165,12 @@ async function find_current(eventObj,res){
     await again(eventObj, res);
     
   } else {
+    console.log('----------------------------------');
+    var x = add_list[add_index].x
+    var y = add_list[add_index].y
+    var address_name = add_list[add_index].address_name
+    var string = "yes&&" + String(x) + "&&"+String(y) +"&&" + String(address_name)
+    console.log('--------------------------------------');
     await request.post(
       {
           url: TARGET_URL,
@@ -173,12 +202,17 @@ async function find_current(eventObj,res){
                       {
                         "type": "postback",
                         "label": "네",
-                        "data": "action=buy&itemid=123"
+                        "data": string
                       },
                       {
                         "type": "postback",
                         "label": "아니요",
-                        "data": "action=add&itemid=123"
+                        "data": "action=no"
+                      },
+                      {
+                        "type": "postback",
+                        "label": "다시 입력하기",
+                        "data": "action=reset"
                       },
                     ]
                   }
@@ -201,8 +235,11 @@ async function find_current(eventObj,res){
 res.sendStatus(200);
 }
 
+
+
+
 app.use(bodyParser.json());
-app.post('/hook', function (req, res) {
+app.post('/hook', async function (req, res) {
     var eventObj = req.body.events[0];
     var headers = req.headers;
     console.log('======================', new Date() ,'======================');
@@ -219,10 +256,28 @@ app.post('/hook', function (req, res) {
       event_time=3;
     }
     else if (event_time == 3){
-      
-    }
-    else if (event_time == 4){
-      
+      let arr = eventObj.postback.data;
+      const string = arr.split("&&");
+      let action = string[0]
+      let current_adress_x = string[1]
+      let current_adress_y = string[2]
+      let current_address = string[3]
+
+      if(action =='yes'){ 
+        let a = current_address.split(' ')[0]
+        let b = current_address.split(' ')[1]
+        console.log(a,b)
+        saveData(a,b,current_adress_x,current_adress_y,current_address,eventObj,res);
+        event_time=1
+      }
+      else if (action == 'no'){
+        
+      }
+      else{
+        main(eventObj,res)
+        event_time=2
+      }
+
     }
 
 });
@@ -246,3 +301,17 @@ try {
     console.log('[HTTPS] HTTPS 오류가 발생하였습니다. HTTPS 서버는 실행되지 않습니다.');
     console.log(error);
   }
+
+function arr_compare(arr, arr_xy){
+  var i;
+  var j = 0;
+  var hospital_xy_data = []
+  var length = arr_xy.length;
+  for( i = 0;i<length;i++){
+    if(arr[j].병원이름 == arr_xy[i].병원이름){
+        hospital_xy_data.push(arr_xy[i]);
+        j += 1;
+    }
+  }
+  return hospital_xy_data;
+}
