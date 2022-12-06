@@ -31,13 +31,13 @@ const delay = () => {
   const randomDelay = Math.floor(Math.random() * 4) * 100
   return new Promise(resolve => setTimeout(resolve, randomDelay))
 }
-const saveData = async (a,b,current_x,current_y,current_address,req, res) => {
+const saveData = async (a,b,current_x,current_y,current_address,eventObj,line_res,req, res) => {
   try{
       emergency.getspot_xy(a,b).then(async (res)=> {
           let addrJson ={}
           addrJson["current_address"] = {"address" : current_address, "x" : current_x,"y" : current_y}
           addrJson["hospital_data"] = res 
-          sample.fetchAPI(addrJson)
+          sample.fetchAPI(addrJson,eventObj,line_res)
 
 
       })
@@ -235,37 +235,7 @@ async function find_current(eventObj,res){
 res.sendStatus(200);
 }
 
-function yes_status(eventObj,res){
-  console.log(hospital_list)
 
-
-
-
-  request.post(
-    {   
-       
-        url: TARGET_URL,
-        headers: {
-            'Authorization': `Bearer ${TOKEN}`,
-        },
-        json: {
-            "replyToken":eventObj.replyToken, //eventObj.replyToken
-            "messages":[
-                {
-                  "type": "text", // ①
-                  "text": "응급 상황인가요?"},
-                  {"type": "text",
-                  "text": "현재있는 위치의 주소나 보이는 곳을 입력하세요."},
-                  
-            
-                ],
-        }
-    },(error, response, body) => {
-
-    });
-  
-res.sendStatus(200);
-}
 
 
 app.use(bodyParser.json());
@@ -297,10 +267,8 @@ app.post('/hook', async function (req, res) {
         let a = current_address.split(' ')[0]
         let b = current_address.split(' ')[1]
         console.log(a,b)
-        saveData(a,b,current_adress_x,current_adress_y,current_address);
-        console.log(hospital_list);
-        event_time=4
-        yes_status(eventObj,res)
+        saveData(a,b,current_adress_x,current_adress_y,current_address,eventObj,res);
+        event_time=1
       }
       else if (action == 'no'){
         
@@ -310,9 +278,6 @@ app.post('/hook', async function (req, res) {
         event_time=2
       }
 
-    }
-    else if (event_time == 4){
-      console.log(hospital_list);
     }
 
 });

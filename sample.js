@@ -1,5 +1,61 @@
 const fetch = require('node-fetch')
+const request = require('request');
+require("dotenv").config( {path: "/home/ec2-user/emergencyRoom-ChatBot/.env"} );
+const TARGET_URL = 'https://api.line.me/v2/bot/message/reply'
+const TOKEN = process.env.CHANNEL_ACCESS_TOKEN;;
 Request = fetch.Request
+const delay = () => {
+  const randomDelay = Math.floor(Math.random() * 4) * 100
+  return new Promise(resolve => setTimeout(resolve, randomDelay))
+}
+
+async function yes_status(eventObj,res,addrData){
+  console.log(addrData.hospital_data.length)
+  if (addrData.hospital_data.length==0){
+  
+    request.post(
+      {   
+         
+          url: TARGET_URL,
+          headers: {
+              'Authorization': `Bearer ${TOKEN}`,
+          },
+          json: {
+              "replyToken":eventObj.replyToken, //eventObj.replyToken
+              "messages": [{'type':'text','text':'근처에 사용가능한 병원이 없습니다.'}]
+          }
+      },(error, response, body) => {
+  
+      });
+    
+  res.sendStatus(200);
+  }else{
+    let message = []
+    message.push({'type':'text','text':'응급실이 사용가능한 병원중 가까운 순으로 보여드립니다.'})
+    await addrData.hospital_data.forEach(element => {
+      message.push({"type":"location","title":element.name,"address":"가까운순","longitude":parseFloat(element.x),"latitude":parseFloat(element.y)})
+    });
+
+    console.log(message)
+
+    request.post(
+      {   
+        
+          url: TARGET_URL,
+          headers: {
+              'Authorization': `Bearer ${TOKEN}`,
+          },
+          json: {
+              "replyToken":eventObj.replyToken, //eventObj.replyToken
+              "messages": message
+          }
+      },(error, response, body) => {
+
+      });
+    
+  res.sendStatus(200);
+}
+}
 
 const addrJson = `{
   "current_address" : { "address" : "현재 위치 주소", "x" : 127.1058342, "y" : 37.359708},
@@ -20,7 +76,7 @@ const KEY = process.env.DIR_KEY;
 function durationSort(a, b) {
   if(a.duration == b.duration){ return 0} return  a.duration> b.duration? 1 : -1;
 }
-const fetchAPI = async (addrData) => {
+const fetchAPI = async (addrData,eventObj,res) => {
   
   const data = {
     cur: addrData["current_address"],
@@ -41,21 +97,22 @@ const fetchAPI = async (addrData) => {
       let request = new Request(url, baseOption);
       return fetch(request).then(async res => {
           const data = await res.json();
-          console.log(data)
           if(data.route != undefined){
+      
           const distance = data.route.trafast[0].summary.distance/1000;
           const duration = data.route.trafast[0].summary.duration/1000/60;
+          await delay()
           addrData["hospital_data"][idx].distance = distance;
           addrData["hospital_data"][idx].duration = duration;
-          console.log(distance,duration)
           addrData.hospital_data.sort(durationSort);
         }
       });
   })   
 
-  Promise.all(promiseList).then(()=> {
+  Promise.all(promiseList).then(async ()=> {
       console.log("fetch end");
       console.log(addrData);
+      await yes_status(eventObj,res,addrData)
       return addrData
   });
 }
