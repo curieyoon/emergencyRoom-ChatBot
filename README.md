@@ -13,22 +13,20 @@
 
 
 </p>
----------------------------------------------------------------------------------
 
 ## Overview
 
-Searching for available emergency room in a straightforward manner is a multi-step process which includes 1) searching for nearby hospitals that may have any ER 2) confirming the ER availability via phone calls or websites, etc. until you find one that accommodates to your need. (if there's any)
-EmergencyRoom Chatbot provides you with a much more efficient and faster solution; drop your address and the Chatbot will have rest of the work done for you on the fly. 
+Searching for available emergency room in a straightforward manner is a multi-step process which includes 1) searching for nearby hospitals that may have any ER 2) confirming the ER availability via phone calls or websites, etc. until you find one that accommodates to your need. (if there's any)<br />EmergencyRoom Chatbot provides you with a much more efficient and faster solution; drop your address and the Chatbot will have rest of the work done for you on the fly. 
 
 
 
--- insert diagram here
+-- insert diagram here<br />
 
 ## For End Users
 
 #### Getting Started
  * Add the ChatBot's LINE channel to your friends' list
-You can start by adding out channel at https://liff.line.me/1645278921-kWRPP32q/?accountId=330zpmoc .
+You can start by adding out channel at https://liff.line.me/1645278921-kWRPP32q/?accountId=330zpmoc .<br />
 
 
 #### Find Emergency Room near you
@@ -40,13 +38,13 @@ You can start by adding out channel at https://liff.line.me/1645278921-kWRPP32q/
 2. enter your current address (e.g 서천동, 덕영대로) or name of the place near you (e.g 경희대학교)
 
 <img src="assets/2_place.jpg" alt="2_place" width="500"/>
--
+
 
 3. confirm your location by tapping '네'
 
 
-4. ChatBot will check ER availability of nearby hospitals. If there's any, it will send the list of the hospitals in ascending order of estimated time to get there from your current location.
-   Note that the hospitals are sorted by estimated time instead of absolute distance from your location, which adds even more reliability for your urgency. 
+4. ChatBot will then check ER availability of nearby hospitals. If there's any, it will send the list of the hospitals in ascending order of estimated time to get there from your current location.
+   Note that the hospitals are sorted by estimated time instead of absolute distance from your location, which adds even more reliability for your urgency. <br />
 
 ## For Developers
 ### Installation
