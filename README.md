@@ -1,6 +1,5 @@
 <br></br><br></br>
-<p align="center"> <img src="assets/logo.png" alt="2_place" width='300'></p>
-
+<p align="center"> <img src="assets/logo.png" alt="2_place" width='300' /></p>
 
 # EmergencyRoom-ChatBot
 
