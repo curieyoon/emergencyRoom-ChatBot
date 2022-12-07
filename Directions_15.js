@@ -19,7 +19,7 @@ const KEY = process.env.DIR_KEY;
 async function yes_status(eventObj,res,addrData){
   console.log(addrData.hospital_data.length)
   if (addrData.hospital_data.length==0){
-  
+    await delay()
     request.post(
       {   
           url: TARGET_URL,
