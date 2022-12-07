@@ -83,3 +83,10 @@ Each key in the ```.env``` indicates:
  * ```DIR_ID``` :
  * ```DIR_KEY```:
 
+
+## License
+Distributed under the MIT License. See License.txt for more information.
+
+
+## Contact
+-Yerim Hong : hongyeee@khu.ac.kr
