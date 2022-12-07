@@ -85,8 +85,10 @@ Each key in the ```.env``` indicates:
 
 
 ## License
-Distributed under the MIT License. See License.txt for more information.
+Distributed under the MIT License. See <a href='License.txt'>License.txt</a> for more information.
 
 
-## Contact
--Yerim Hong : hongyeee@khu.ac.kr
+## Contact 
+* Yerim Hong : hongyeee@khu.ac.kr
+* Curie Yoon : curieyoon@khu.ac.kr
+_last name 알파벳순_
