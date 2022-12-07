@@ -1,11 +1,12 @@
-
+<br>
 <p align="center"> <img src="assets/logo.png" alt="2_place" width='300'></p>
-# <p align="center">EmergencyRoom-ChatBot
+<br>
+<p align="center"># EmergencyRoom-ChatBot</p>
 
 
 [![KHU_group9](https://img.shields.io/badge/KHU--OSS-Group9-blueviolet)](https://www.javascript.com) [![made-with-javascript](https://img.shields.io/badge/Made%20with-JavaScript-1f425f.svg)](https://www.javascript.com) [![made-with-express](https://img.shields.io/badge/Made%20with-Express-orange.svg)](https://www.javascript.com)
 
-</p>
+
 
 EmergencyRoom-ChatBot is a chatbot service delivered on line-messenger platform.
 
