@@ -160,12 +160,11 @@ async function findme(eventObj, res) {
                   jbody = JSON.parse(body);
                   add_list = new Array();
                   add_list = jbody.documents;
-                  console.log("addlist PLACE !--- ", add_list)
+                  // console.log("addlist PLACE !--- ", add_list)
                   find_current(eventObj, res); 
                 }
   
           }, ()=>{
-            console.log("findme place 200")
             res.sendStatus(200);
           }
           )
@@ -180,7 +179,6 @@ async function findme(eventObj, res) {
 
   
   }, ()=>{
-    console.log("findme add 200");
     res.sendStatus(200);
   }
   )
@@ -255,7 +253,7 @@ async function find_current(eventObj,res){
       }
       
       );
-      console.log("button send")  
+      
       res.sendStatus(200);
   }
 
@@ -284,7 +282,6 @@ app.post('/hook', async function (req, res) {
       let current_adress_x = string[1]
       let current_adress_y = string[2]
       let current_address = string[3]
-      console.log("action here: ", action);
       if(action =='yes'){ 
         let a = current_address.split(' ')[0]
         let b = current_address.split(' ')[1]
@@ -293,7 +290,6 @@ app.post('/hook', async function (req, res) {
         event_time=1
       }
       else if (action == 'action=no'){
-        console.log("action ", action);
         add_index++;
         find_current(eventObj, res); 
 
