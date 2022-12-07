@@ -1,14 +1,24 @@
-# EmergencyRoom-ChatBot
+<br></br>
+<p align="center"> <img src="assets/logo.png" alt="2_place" width='300' /></p>
+
+# <p align="center">EmergencyRoom-ChatBot</p>
+<p align="center">
+<img src='https://img.shields.io/badge/KHU--OSS-Group9-blueviolet' /></p>
+<p align="center">
+ <a  href='https://www.javascript.com'><img src='https://img.shields.io/badge/Made%20with-JavaScript-1f425f.svg' /> </a><a  href='https://www.javascript.com'> <img src='https://img.shields.io/badge/Made%20with-Express-orange.svg'/></a></p>
+<p align="center">
+ <a href='https://developers.line.biz/en/docs/messaging-api/overview/'><img src='https://img.shields.io/badge/API-LINE-06c755'  /> </a> <a href='https://developers.kakao.com/docs/latest/ko/local/commo'><img src='https://img.shields.io/badge/API-KAKAO--LOCAL-fee500' /></a> <a href='https://api.ncloud-docs.com/docs/ai-naver-mapsdirections-driving'> <img src='https://img.shields.io/badge/API-NAVER--MAP-1ic800'  />  </a> <a href='https://www.data.go.kr/data/15057684/openapi.do'><img src='https://img.shields.io/badge/API-KR--HOSPITAL-0b70b9' /> </a>
 
 
-[![made-with-javascript](https://img.shields.io/badge/KHU--OSS-Group9-blueviolet)](https://www.javascript.com) [![made-with-javascript](https://img.shields.io/badge/Made%20with-JavaScript-1f425f.svg)](https://www.javascript.com)
 
+</p>
 EmergencyRoom-ChatBot is a chatbot service delivered on line-messenger platform.
 
 ## For End Users
 
 #### Getting Started
-**Add the ChatBot's line channel**
+ * Add the ChatBot's LINE channel to your friends' list
+You can start by adding out channel at https://liff.line.me/1645278921-kWRPP32q/?accountId=330zpmoc .
 
 
 #### Find Emergency Room near you
@@ -53,5 +63,10 @@ DIR_KEY = "Your_Naver_Map_API_KEY"
 
 To import ```.env``` file properly in each module, make sure the line ```require("dotenv").config( {path: "/path/to/.env"} );``` contains the absolute path of your ```.env``` file on your server.
 
-
+ * ```CHANNEL_ACCESS_TOCKEN```: 
+ * ```KAKAO_KEY```:
+ * ```MY_DOMAIN```:
+ * ```EMERGENCY_KEY```:
+ * ```DIR_ID``` :
+ * ```DIR_KEY```:
 
