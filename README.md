@@ -5,7 +5,7 @@
 <p align="center">
 <img src='https://img.shields.io/badge/KHU--OSS-Group9-blueviolet' /></p>
 <p align="center">
- <a  href='https://www.javascript.com'><img src='https://img.shields.io/badge/Made%20with-NodeJS-68a063.svg' /> </a><a  href='https://expressjs.com/'> <img src='https://img.shields.io/badge/Made%20with-Express-259dff.svg'/></a></a><a  href='https://www.javascript.com'> <img src='https://img.shields.io/badge/Made%20with-AWS-FF9900.svg'/></a></p>
+ <a  href='https://nodejs.org/en/'><img src='https://img.shields.io/badge/Made%20with-NodeJS-68a063.svg' /> </a><a  href='https://expressjs.com/'> <img src='https://img.shields.io/badge/Made%20with-Express-259dff.svg'/></a></a><a  href='https://aws.amazon.com'> <img src='https://img.shields.io/badge/Made%20with-AWS-FF9900.svg'/></a></p>
 <p align="center">
  <a href='https://developers.line.biz/en/docs/messaging-api/overview/'><img src='https://img.shields.io/badge/API-LINE-06c755'  /> </a> <a href='https://developers.kakao.com/docs/latest/ko/local/commo'><img src='https://img.shields.io/badge/API-KAKAO--LOCAL-fee500' /></a> <a href='https://api.ncloud-docs.com/docs/ai-naver-mapsdirections-driving'> <img src='https://img.shields.io/badge/API-NAVER--MAP-1ic800'  />  </a> <a href='https://www.data.go.kr/data/15057684/openapi.do'><img src='https://img.shields.io/badge/API-DATA.GO.KR-0b70b9' /> </a>
 
