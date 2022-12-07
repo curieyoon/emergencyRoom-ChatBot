@@ -18,9 +18,8 @@
 
 Searching for available emergency room in a straightforward manner is a multi-step process which includes 1) searching for nearby hospitals that may have any ER 2) confirming the ER availability via phone calls or websites, etc. until you find one that accommodates to your need. (if there's any)<br />EmergencyRoom Chatbot provides you with a much more efficient and faster solution; drop your address and the Chatbot will have rest of the work done for you on the fly. 
 
+<img src="assets/chatbot_architecture.png" alt="1_activate" />
 
-
--- insert diagram here<br />
 
 ## For End Users
 
