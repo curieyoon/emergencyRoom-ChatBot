@@ -7,7 +7,7 @@ const convert = require("xml-js");
 
 var url = 'http://apis.data.go.kr/B552657/ErmctInfoInqireService/getSrsillDissAceptncPosblInfoInqire';
 var url2 = 'http://apis.data.go.kr/B552657/ErmctInfoInqireService/getEgytListInfoInqire';
-var queryParams = '?' + encodeURIComponent('serviceKey') + '=52tXHgaW46YUpGn9k0r3IQrduIl6kBOl3Ta8Idra1%2BpPMYhL4qVCDu9itW8FVbDtMF4f9LAT9NJXEx7pvEJv%2FQ%3D%3D'; /* Service Key*/
+
 
 /* 함수 만들기
 
@@ -22,7 +22,7 @@ const emergencys = [];
 
 
 const getspot = (cap, city) => {
-
+    var queryParams = '?' + encodeURIComponent('serviceKey') + '=52tXHgaW46YUpGn9k0r3IQrduIl6kBOl3Ta8Idra1%2BpPMYhL4qVCDu9itW8FVbDtMF4f9LAT9NJXEx7pvEJv%2FQ%3D%3D'; /* Service Key*/
     queryParams += '&' + encodeURIComponent('STAGE1') + '=' + encodeURIComponent(cap); /* */
     queryParams += '&' + encodeURIComponent('STAGE2') + '=' + encodeURIComponent(city); /* */
     queryParams += '&' + encodeURIComponent('SM_TYPE') + '=' + encodeURIComponent(''); /* */
