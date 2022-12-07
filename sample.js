@@ -17,7 +17,11 @@ const KEY = process.env.DIR_KEY;
 
 
 async function yes_status(eventObj,res,addrData){
-  console.log(addrData.hospital_data.length)
+  console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+  console.log("eventObj ", eventObj)
+  console.log("res ", res)
+  console.log("addrData ", addrData)
+  console.log("&&&&&&&&&&&&&&&&", addrData.hospital_data.length)
   if (addrData.hospital_data.length==0){
   
     request.post(
@@ -44,8 +48,10 @@ async function yes_status(eventObj,res,addrData){
     await addrData.hospital_data.forEach(element => {
       message.push({"type":"location","title":element.name,"address":"가까운순","longitude":parseFloat(element.x),"latitude":parseFloat(element.y)})
     });
-    message.push({"type":"text","text":"응급상황시 아무채팅이나 입력해주세요."})
-    request.post(
+    console.log(message)
+
+    await request.post(
+
       {   
           url: TARGET_URL,
           headers: {
@@ -56,7 +62,9 @@ async function yes_status(eventObj,res,addrData){
               "messages": message
           }
       },(error, response, body) => {
-
+        console.log(error);
+        console.log(response.statusCode);
+        console.log(response.statusMessage);
       });
     
   res.sendStatus(200);

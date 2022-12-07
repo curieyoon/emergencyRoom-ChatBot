@@ -65,8 +65,6 @@ const saveData = async (a,b,current_x,current_y,current_address,eventObj,line_re
           addrJson["current_address"] = {"address" : current_address, "x" : current_x,"y" : current_y}
           addrJson["hospital_data"] = res
           sample.fetchAPI(addrJson,eventObj,line_res)
-
-
       })
   }
   catch(e){
@@ -75,6 +73,8 @@ const saveData = async (a,b,current_x,current_y,current_address,eventObj,line_re
 }
 
 function main(eventObj,res){
+  add_list = [];
+  add_index = 0;
   request.post(
     {   
        
@@ -103,7 +103,7 @@ res.sendStatus(200);
   
 
 async function again(eventObj, res) {
-  request.post(
+  await request.post(
     {   
        
         url: TARGET_URL,
@@ -165,6 +165,7 @@ async function findme(eventObj, res) {
                 }
   
           }, ()=>{
+            console.log("findme place 200")
             res.sendStatus(200);
           }
           )
@@ -179,7 +180,7 @@ async function findme(eventObj, res) {
 
   
   }, ()=>{
-    console.log("sending status in findme");
+    console.log("findme add 200");
     res.sendStatus(200);
   }
   )
@@ -254,13 +255,12 @@ async function find_current(eventObj,res){
       }
       
       );
+      console.log("button send")  
+      res.sendStatus(200);
   }
 
   
-res.sendStatus(200);
 }
-
-
 
 
 app.use(bodyParser.json());
@@ -268,7 +268,6 @@ app.post('/hook', async function (req, res) {
     var eventObj = req.body.events[0];
     var headers = req.headers;
     console.log('======================', new Date() ,'======================');
-
     console.log("event_time: ", event_time);
     if(event_time==1){
       main(eventObj,res)
@@ -285,7 +284,7 @@ app.post('/hook', async function (req, res) {
       let current_adress_x = string[1]
       let current_adress_y = string[2]
       let current_address = string[3]
-
+      console.log("action here: ", action);
       if(action =='yes'){ 
         let a = current_address.split(' ')[0]
         let b = current_address.split(' ')[1]
@@ -293,13 +292,18 @@ app.post('/hook', async function (req, res) {
         saveData(a,b,current_adress_x,current_adress_y,current_address,eventObj,res);
         event_time=1
       }
-      else if (action == 'no'){
-        main(eventObj,res)
-        event_time=2
+      else if (action == 'action=no'){
+        console.log("action ", action);
+        add_index++;
+        find_current(eventObj, res); 
+
       }
       else{
+        add_list = [];
+        add_index = 0;
+        event_time = 2;
         main(eventObj,res)
-        event_time=2
+        
       }
 
     }
