@@ -2,7 +2,7 @@ const address = require('./Address.js');
 const express = require('express');
 const request = require('request');
 const emergency = require('./emergency_api.js')
-const sample = require('./sample.js')
+const sample = require('./Directions_15')
 
 const fetch = () => import('node-fetch').then(({default: fetch}) => fetch());
 require("dotenv").config( {path: "/home/ec2-user/emergencyRoom-ChatBot/.env"} );
@@ -186,7 +186,7 @@ async function findme(eventObj, res) {
 
 
 async function find_current(eventObj,res){ 
-  if (add_list.length == 0) {
+  if (add_list.length <= add_index) {
     console.log("no current address");
     await again(eventObj, res);
     

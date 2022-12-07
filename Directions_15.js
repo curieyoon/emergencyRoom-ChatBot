@@ -42,7 +42,7 @@ async function yes_status(eventObj,res,addrData){
     let message = []
     message.push({'type':'text','text':'응급실이 사용가능한 병원중 가까운 순으로 보여드립니다.'})
     await addrData.hospital_data.forEach(element => {
-      message.push({"type":"location","title":element.name,"address":String(element.distance)+"KM","longitude":parseFloat(element.x),"latitude":parseFloat(element.y)})
+      message.push({"type":"location","title":element.name,"address":String(parseInt(element.duration))+"분 |"+String(element.distance)+"KM","longitude":parseFloat(element.x),"latitude":parseFloat(element.y)})
     });
     message.push({"type":"text","text":"응급상황시 아무채팅이나 입력해주세요."})
     request.post(
