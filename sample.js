@@ -17,11 +17,7 @@ const KEY = process.env.DIR_KEY;
 
 
 async function yes_status(eventObj,res,addrData){
-  console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
-  console.log("eventObj ", eventObj)
-  console.log("res ", res)
-  console.log("addrData ", addrData)
-  console.log("&&&&&&&&&&&&&&&&", addrData.hospital_data.length)
+  
   if (addrData.hospital_data.length==0){
   
     request.post(
@@ -31,7 +27,7 @@ async function yes_status(eventObj,res,addrData){
               'Authorization': `Bearer ${TOKEN}`,
           },
           json: {
-              "replyToken":eventObj.replyToken, //eventObj.replyToken
+              "replyToken":eventObj.replyToken, 
               "messages": [{'type':'text','text':'근처에 사용가능한 병원이 없습니다.'}]
           }
       },(error, response, body) => {
@@ -44,7 +40,7 @@ async function yes_status(eventObj,res,addrData){
     addrData.hospital_data=addrData.hospital_data.slice(0,3)
     console.log(addrData.hospital_data)
     let message = []
-    message.push({'type':'text','text':'응급실이 사용가능한 병원중 가까운 순으로 보여드립니다.'})
+    await message.push({'type':'text','text':'응급실이 사용가능한 병원중 가까운 순으로 보여드립니다.'})
     await addrData.hospital_data.forEach(element => {
       message.push({"type":"location","title":element.name,"address":"가까운순","longitude":parseFloat(element.x),"latitude":parseFloat(element.y)})
     });
@@ -58,7 +54,7 @@ async function yes_status(eventObj,res,addrData){
               'Authorization': `Bearer ${TOKEN}`,
           },
           json: {
-              "replyToken":eventObj.replyToken, //eventObj.replyToken
+              "replyToken":eventObj.replyToken, 
               "messages": message
           }
       },(error, response, body) => {
