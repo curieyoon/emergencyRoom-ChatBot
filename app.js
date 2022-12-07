@@ -31,16 +31,39 @@ const delay = () => {
   const randomDelay = Math.floor(Math.random() * 4) * 100
   return new Promise(resolve => setTimeout(resolve, randomDelay))
 }
+
+// const agent = new HTTPS.Agent({
+//   keepAlive: true,
+// });
+function loading(eventObj,res){
+  request.post(
+    {   
+        url: 'https://api.line.me/v2/bot/message/push',
+        headers: {
+            'Authorization': `Bearer ${TOKEN}`,
+        },
+        json: {
+            "to":eventObj.source.userId, //eventObj.replyToken
+            "messages":[
+                {
+                  "type": "text", // ①
+                  "text": "잠시만 기다려주세요."},
+                  
+            
+                ],
+        }
+    },(error, response, body) => {
+
+    });
+  
+}
 const saveData = async (a,b,current_x,current_y,current_address,eventObj,line_res,req, res) => {
   try{
       emergency.getspot_xy(a,b).then(async (res)=> {
+          await loading(eventObj,line_res)
           let addrJson ={}
           addrJson["current_address"] = {"address" : current_address, "x" : current_x,"y" : current_y}
-          addrJson["hospital_data"] = res 
-          console.log("**************************")
-         // console.log("addrJson ", addrJson);
-          //console.log("eventObj ", eventObj);
-         // console.log("line_res ", line_res);
+          addrJson["hospital_data"] = res
           sample.fetchAPI(addrJson,eventObj,line_res)
       })
   }
@@ -170,12 +193,10 @@ async function find_current(eventObj,res){
     await again(eventObj, res);
     
   } else {
-    console.log('----------------------------------');
     var x = add_list[add_index].x
     var y = add_list[add_index].y
     var address_name = add_list[add_index].address_name
     var string = "yes&&" + String(x) + "&&"+String(y) +"&&" + String(address_name)
-    console.log('--------------------------------------');
     await request.post(
       {
           url: TARGET_URL,
@@ -248,8 +269,6 @@ app.post('/hook', async function (req, res) {
     var headers = req.headers;
     console.log('======================', new Date() ,'======================');
     console.log("event_time: ", event_time);
-    console.log(headers);
-    console.log(eventObj);
     if(event_time==1){
       main(eventObj,res)
       event_time=2
@@ -277,6 +296,7 @@ app.post('/hook', async function (req, res) {
         console.log("action ", action);
         add_index++;
         find_current(eventObj, res); 
+
       }
       else{
         add_list = [];
@@ -310,16 +330,16 @@ try {
     console.log(error);
   }
 
-function arr_compare(arr, arr_xy){
-  var i;
-  var j = 0;
-  var hospital_xy_data = []
-  var length = arr_xy.length;
-  for( i = 0;i<length;i++){
-    if(arr[j].병원이름 == arr_xy[i].병원이름){
-        hospital_xy_data.push(arr_xy[i]);
-        j += 1;
-    }
-  }
-  return hospital_xy_data;
-}
+// function arr_compare(arr, arr_xy){
+//   var i;
+//   var j = 0;
+//   var hospital_xy_data = []
+//   var length = arr_xy.length;
+//   for( i = 0;i<length;i++){
+//     if(arr[j].병원이름 == arr_xy[i].병원이름){
+//         hospital_xy_data.push(arr_xy[i]);
+//         j += 1;
+//     }
+//   }
+//   return hospital_xy_data;
+// }

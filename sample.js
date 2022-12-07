@@ -4,10 +4,17 @@ require("dotenv").config( {path: "/home/ec2-user/emergencyRoom-ChatBot/.env"} );
 const TARGET_URL = 'https://api.line.me/v2/bot/message/reply'
 const TOKEN = process.env.CHANNEL_ACCESS_TOKEN;;
 Request = fetch.Request
+const HTTPS = require('https');
 const delay = () => {
   const randomDelay = Math.floor(Math.random() * 4) * 100
   return new Promise(resolve => setTimeout(resolve, randomDelay))
 }
+
+require("dotenv").config( {path: "/home/ec2-user/emergency_room_ChatBot/.env"} );
+const ID = process.env.DIR_ID;
+const KEY = process.env.DIR_KEY;
+
+
 
 async function yes_status(eventObj,res,addrData){
   console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
@@ -19,7 +26,6 @@ async function yes_status(eventObj,res,addrData){
   
     request.post(
       {   
-         
           url: TARGET_URL,
           headers: {
               'Authorization': `Bearer ${TOKEN}`,
@@ -33,18 +39,20 @@ async function yes_status(eventObj,res,addrData){
       });
     
   res.sendStatus(200);
-  }else{
+  }
+  else{
+    addrData.hospital_data=addrData.hospital_data.slice(0,3)
+    console.log(addrData.hospital_data)
     let message = []
     message.push({'type':'text','text':'응급실이 사용가능한 병원중 가까운 순으로 보여드립니다.'})
     await addrData.hospital_data.forEach(element => {
       message.push({"type":"location","title":element.name,"address":"가까운순","longitude":parseFloat(element.x),"latitude":parseFloat(element.y)})
     });
-
     console.log(message)
 
     await request.post(
+
       {   
-        
           url: TARGET_URL,
           headers: {
               'Authorization': `Bearer ${TOKEN}`,
@@ -62,22 +70,6 @@ async function yes_status(eventObj,res,addrData){
   res.sendStatus(200);
 }
 }
-
-const addrJson = `{
-  "current_address" : { "address" : "현재 위치 주소", "x" : 127.1058342, "y" : 37.359708},
-  "number" : 3,
-  "hospital_data" :[
-      {"name" : "병원명", "address" : "병원 주소", "x" : 129.075986, "y" : 35.179470, "distance" : 0, "duration" : 0},
-      {"name" : "병원명", "address" : "병원 주소", "x" : 127.1434, "y" : 37.2724, "distance" : 0, "duration" : 0},
-      {"name" : "병원명", "address" : "병원 주소", "x" : 127.1434, "y" : 37.2724, "distance" : 0, "duration" : 0}
-  ]
-}`
-
-const addrData = JSON.parse(addrJson);
-require("dotenv").config( {path: "/home/ec2-user/emergency_room_ChatBot/.env"} );
-const ID = process.env.DIR_ID;
-const KEY = process.env.DIR_KEY;
-
 
 function durationSort(a, b) {
   if(a.duration == b.duration){ return 0} return  a.duration> b.duration? 1 : -1;
@@ -117,9 +109,7 @@ const fetchAPI = async (addrData,eventObj,res) => {
 
   Promise.all(promiseList).then(async ()=> {
       console.log("fetch end");
-      console.log(addrData);
       await yes_status(eventObj,res,addrData)
-      return addrData
   });
 }
 
