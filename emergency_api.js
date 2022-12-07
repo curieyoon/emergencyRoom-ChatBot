@@ -104,7 +104,7 @@ const  getspot_xy= (cap, city) =>{
                     let address_y = test.response.body.items.item[i].wgs84Lon._text;
                     let address_name = test.response.body.items.item[i].dutyName._text;
                     
-                    emergency_xy.push({"name": address_name, "x":address_x, "y": address_y,"distance":0,"duration":0});
+                    emergency_xy.push({"name": address_name, "y":address_x, "x": address_y,"distance":0,"duration":0});
                     
                 }
                 resolve(emergency_xy);
