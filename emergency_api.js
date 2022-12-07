@@ -43,7 +43,6 @@ const getspot = (cap, city) => {
             
                 const test = await JSON.parse(xmlTojson)
                 const items = test.response.body.items
-
                 
                 var i;
                 for(i = 0; i < items.item.length; i++){ // 병원 이름과 응급실 가능여부 확인 반복
@@ -77,9 +76,9 @@ const getspot = (cap, city) => {
 
 
 
-const emergency_xy = []
-const  getspot_xy= (cap, city) =>{
 
+const  getspot_xy= (cap, city) =>{
+    var queryParams = '?' + encodeURIComponent('serviceKey') + '=52tXHgaW46YUpGn9k0r3IQrduIl6kBOl3Ta8Idra1%2BpPMYhL4qVCDu9itW8FVbDtMF4f9LAT9NJXEx7pvEJv%2FQ%3D%3D'; /* Service Key*/
         queryParams += '&' + encodeURIComponent('Q0') + '=' + encodeURIComponent(cap); /* */
         queryParams += '&' + encodeURIComponent('Q1') + '=' + encodeURIComponent(city); /* */
         queryParams += '&' + encodeURIComponent('pageNo') + '=' + encodeURIComponent('1'); /* */
@@ -93,6 +92,7 @@ const  getspot_xy= (cap, city) =>{
                 reject(err);
             }
             else{
+                var emergency_xy = []
                 var result = body
                 var xmlTojson = convert.xml2json(result, {compact: true, spaces:0}); // xml 파일 json 변환
             
@@ -103,7 +103,7 @@ const  getspot_xy= (cap, city) =>{
                     let address_x = test.response.body.items.item[i].wgs84Lat._text;
                     let address_y = test.response.body.items.item[i].wgs84Lon._text;
                     let address_name = test.response.body.items.item[i].dutyName._text;
-                    
+                    console.log(address_name,address_x,address_y)
                     emergency_xy.push({"name": address_name, "y":address_x, "x": address_y,"distance":0,"duration":0});
                     
                 }
