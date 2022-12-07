@@ -10,7 +10,11 @@ const delay = () => {
 }
 
 async function yes_status(eventObj,res,addrData){
-  console.log(addrData.hospital_data.length)
+  console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+  console.log("eventObj ", eventObj)
+  console.log("res ", res)
+  console.log("addrData ", addrData)
+  console.log("&&&&&&&&&&&&&&&&", addrData.hospital_data.length)
   if (addrData.hospital_data.length==0){
   
     request.post(
@@ -38,7 +42,7 @@ async function yes_status(eventObj,res,addrData){
 
     console.log(message)
 
-    request.post(
+    await request.post(
       {   
         
           url: TARGET_URL,
@@ -50,7 +54,9 @@ async function yes_status(eventObj,res,addrData){
               "messages": message
           }
       },(error, response, body) => {
-
+        console.log(error);
+        console.log(response.statusCode);
+        console.log(response.statusMessage);
       });
     
   res.sendStatus(200);
