@@ -20,12 +20,15 @@ function getspot(cap, city){
 */
 const emergencys = [];
 
+
 const getspot = (cap, city) => {
+
     queryParams += '&' + encodeURIComponent('STAGE1') + '=' + encodeURIComponent(cap); /* */
     queryParams += '&' + encodeURIComponent('STAGE2') + '=' + encodeURIComponent(city); /* */
     queryParams += '&' + encodeURIComponent('SM_TYPE') + '=' + encodeURIComponent(''); /* */
     queryParams += '&' + encodeURIComponent('pageNo') + '=' + encodeURIComponent('1'); /* */
     queryParams += '&' + encodeURIComponent('numOfRows') + '=' + encodeURIComponent('10'); /* */
+
     return new Promise((resolve, reject)=> {
         request({
             url: url + queryParams,
@@ -40,6 +43,7 @@ const getspot = (cap, city) => {
             
                 const test = await JSON.parse(xmlTojson)
                 const items = test.response.body.items
+
                 
                 var i;
                 for(i = 0; i < items.item.length; i++){ // 병원 이름과 응급실 가능여부 확인 반복
@@ -52,6 +56,7 @@ const getspot = (cap, city) => {
                 }
                 resolve(emergencys);
             }
+
         );
     })
 };
@@ -109,5 +114,4 @@ const  getspot_xy= (cap, city) =>{
 )};
     
 module.exports = {getspot,getspot_xy}
-
 
