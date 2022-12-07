@@ -2,13 +2,16 @@
 <p align="center"> <img src="assets/logo.png" alt="2_place" width='300' /></p>
 
 # <p align="center">EmergencyRoom-ChatBot</p>
+<p align="center">
+<img src='https://img.shields.io/badge/KHU--OSS-Group9-blueviolet' /></p>
+<p align="center">
+ <img src='https://img.shields.io/badge/Made%20with-JavaScript-1f425f.svg' href='https://www.javascript.com' />  <img src='https://img.shields.io/badge/Made%20with-Express-orange.svg' href='https://www.javascript.com'/> </p>
+<p align="center">
+ <img src='https://img.shields.io/badge/API-LINE-06c755' href='https://developers.line.biz/en/docs/messaging-api/overview/' />  <img src='https://img.shields.io/badge/API-KAKAO--LOCAL-fee500' href='https://developers.kakao.com/docs/latest/ko/local/commo' />  <img src='https://img.shields.io/badge/API-NAVER--MAP-1ic800' href='https://api.ncloud-docs.com/docs/ai-naver-mapsdirections-driving' />  <img src='https://img.shields.io/badge/API-KR--HOSPITAL-0b70b9' href='https://www.data.go.kr/data/15057684/openapi.do' /> 
 
 
-[![KHU_group9](https://img.shields.io/badge/KHU--OSS-Group9-blueviolet)](https://www.javascript.com) [![made-with-javascript](https://img.shields.io/badge/Made%20with-JavaScript-1f425f.svg)](https://www.javascript.com) [![made-with-express](https://img.shields.io/badge/Made%20with-Express-orange.svg)](https://www.javascript.com)
 
-[![LINE](https://img.shields.io/badge/API-LINE-06c755)](https://developers.line.biz/en/docs/messaging-api/overview/) [![KAKAO](https://img.shields.io/badge/API-KAKAO--LOCAL-fee500)](https://developers.kakao.com/docs/latest/ko/local/common) [![MAP](https://img.shields.io/badge/API-NAVER--MAP-1ic800)](https://api.ncloud-docs.com/docs/ai-naver-mapsdirections-driving) [![HOSPITAL](https://img.shields.io/badge/API-KR--HOSPITAL-0b70b9)](https://www.data.go.kr/data/15057684/openapi.do)
-
-
+</p>
 EmergencyRoom-ChatBot is a chatbot service delivered on line-messenger platform.
 
 ## For End Users
