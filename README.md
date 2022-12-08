@@ -44,6 +44,8 @@ You can start by adding out channel at https://liff.line.me/1645278921-kWRPP32q/
 
 4. ChatBot will then check ER availability of nearby hospitals. If there's any, it will send the list of the hospitals in ascending order of estimated time to get there from your current location.
     <br />Note that the hospitals are sorted by estimated time instead of absolute distance from your location, which adds even more reliability for your urgency. <br />
+<img src="assets/hospital.png" alt="2_place" width="500"/>
+
 
 ## For Developers
 ### Installation
