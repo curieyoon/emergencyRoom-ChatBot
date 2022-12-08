@@ -1,9 +1,0 @@
-{
-    "current_address" : { "address" : "현재 위치 주소", "x" : 127.1058342, "y" : 37.359708},
-    "number" : 10,
-    "hospital_data" :[
-        {"name" : "병원명", "address" : "병원 주소", "x" : 129.075986, "y" : 35.179470, "distance" : 377830, "duration" : 15177133},
-        {"name" : "병원명", "address" : "병원 주소", "x" : 127.1058342, "y" : 37.359708, "distance" : 377830, "duration" : 15177133}
-    ]
-}
-

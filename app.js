@@ -1,14 +1,14 @@
 const address = require('./Address.js');
 const express = require('express');
 const request = require('request');
-
+const emergency = require('./emergency_api.js')
+const sample = require('./Directions_15')
 
 const fetch = () => import('node-fetch').then(({default: fetch}) => fetch());
-require("dotenv").config( {path: "/home/ec2-user/prj/emergency_room_ChatBot/.env"} );
+require("dotenv").config( {path: "/home/ec2-user/emergencyRoom-ChatBot/.env"} );
 const KAKAO_KEY = process.env.KAKAO_KEY;
 const TOKEN = process.env.CHANNEL_ACCESS_TOKEN;;
 const domain = process.env.MY_DOMAIN;
-const EMERGENCY_KEY = process.env.EMERGENCY_KEY;
 
 const KAKAO_URL = "https://dapi.kakao.com/v2/local/search/address.json?"
 const KAKAO_PLACE_URL = "https://dapi.kakao.com/v2/local/search/keyword.json?"
@@ -18,14 +18,62 @@ const path = require('path');
 const HTTPS = require('https');
 const sslport = 23023;
 const bodyParser = require('body-parser');
+const { stringify } = require('querystring');
 const app = express();
 var event_time = 1
 var add_list = new Array();
 
 var add_index = 0;
 var confirmed = new Boolean(false);
+var hospital_list = []
+const delay = () => {
+  const randomDelay = Math.floor(Math.random() * 4) * 100
+  return new Promise(resolve => setTimeout(resolve, randomDelay))
+}
+
+// const agent = new HTTPS.Agent({
+//   keepAlive: true,
+// });
+function loading(eventObj,res){
+  request.post(
+    {   
+        url: 'https://api.line.me/v2/bot/message/push',
+        headers: {
+            'Authorization': `Bearer ${TOKEN}`,
+        },
+        json: {
+            "to":eventObj.source.userId, //eventObj.replyToken
+            "messages":[
+                {
+                  "type": "text", // ①
+                  "text": "잠시만 기다려주세요."},
+                  
+            
+                ],
+        }
+    },(error, response, body) => {
+
+    });
+  
+}
+const saveData = async (a,b,current_x,current_y,current_address,eventObj,line_res,req, res) => {
+  try{
+      emergency.getspot_xy(a,b).then(async (res)=> {
+          await loading(eventObj,line_res)
+          let addrJson ={}
+          addrJson["current_address"] = {"address" : current_address, "x" : current_x,"y" : current_y}
+          addrJson["hospital_data"] = res
+          sample.fetchAPI(addrJson,eventObj,line_res)
+      })
+  }
+  catch(e){
+      console.log(e);
+  }
+}
 
 function main(eventObj,res){
+  add_list = [];
+  add_index = 0;
   request.post(
     {   
        
@@ -48,12 +96,13 @@ function main(eventObj,res){
     },(error, response, body) => {
 
     });
-
+  
 res.sendStatus(200);
 }
+  
 
 async function again(eventObj, res) {
-  request.post(
+  await request.post(
     {   
        
         url: TARGET_URL,
@@ -110,7 +159,7 @@ async function findme(eventObj, res) {
                   jbody = JSON.parse(body);
                   add_list = new Array();
                   add_list = jbody.documents;
-                  console.log("addlist PLACE !--- ", add_list)
+                  // console.log("addlist PLACE !--- ", add_list)
                   find_current(eventObj, res); 
                 }
   
@@ -129,7 +178,6 @@ async function findme(eventObj, res) {
 
   
   }, ()=>{
-    console.log("sending status in findme");
     res.sendStatus(200);
   }
   )
@@ -137,11 +185,15 @@ async function findme(eventObj, res) {
 
 
 async function find_current(eventObj,res){ 
-  if (add_list.length == 0) {
+  if (add_list.length <= add_index) {
     console.log("no current address");
     await again(eventObj, res);
     
   } else {
+    var x = add_list[add_index].x
+    var y = add_list[add_index].y
+    var address_name = add_list[add_index].address_name
+    var string = "yes&&" + String(x) + "&&"+String(y) +"&&" + String(address_name)
     await request.post(
       {
           url: TARGET_URL,
@@ -173,12 +225,17 @@ async function find_current(eventObj,res){
                       {
                         "type": "postback",
                         "label": "네",
-                        "data": "action=buy&itemid=123"
+                        "data": string
                       },
                       {
                         "type": "postback",
                         "label": "아니요",
-                        "data": "action=add&itemid=123"
+                        "data": "action=no"
+                      },
+                      {
+                        "type": "postback",
+                        "label": "다시 입력하기",
+                        "data": "action=reset"
                       },
                     ]
                   }
@@ -195,21 +252,20 @@ async function find_current(eventObj,res){
       }
       
       );
+      
+      res.sendStatus(200);
   }
 
   
-res.sendStatus(200);
 }
 
+
 app.use(bodyParser.json());
-app.post('/hook', function (req, res) {
+app.post('/hook', async function (req, res) {
     var eventObj = req.body.events[0];
     var headers = req.headers;
     console.log('======================', new Date() ,'======================');
-
     console.log("event_time: ", event_time);
-    console.log(headers);
-    console.log(eventObj);
     if(event_time==1){
       main(eventObj,res)
       event_time=2
@@ -219,10 +275,32 @@ app.post('/hook', function (req, res) {
       event_time=3;
     }
     else if (event_time == 3){
-      
-    }
-    else if (event_time == 4){
-      
+      let arr = eventObj.postback.data;
+      const string = arr.split("&&");
+      let action = string[0]
+      let current_adress_x = string[1]
+      let current_adress_y = string[2]
+      let current_address = string[3]
+      if(action =='yes'){ 
+        let a = current_address.split(' ')[0]
+        let b = current_address.split(' ')[1]
+        console.log(a,b)
+        saveData(a,b,current_adress_x,current_adress_y,current_address,eventObj,res);
+        event_time=1
+      }
+      else if (action == 'action=no'){
+        add_index++;
+        find_current(eventObj, res); 
+
+      }
+      else{
+        add_list = [];
+        add_index = 0;
+        event_time = 2;
+        main(eventObj,res)
+        
+      }
+
     }
 
 });
@@ -246,3 +324,17 @@ try {
     console.log('[HTTPS] HTTPS 오류가 발생하였습니다. HTTPS 서버는 실행되지 않습니다.');
     console.log(error);
   }
+
+// function arr_compare(arr, arr_xy){
+//   var i;
+//   var j = 0;
+//   var hospital_xy_data = []
+//   var length = arr_xy.length;
+//   for( i = 0;i<length;i++){
+//     if(arr[j].병원이름 == arr_xy[i].병원이름){
+//         hospital_xy_data.push(arr_xy[i]);
+//         j += 1;
+//     }
+//   }
+//   return hospital_xy_data;
+// }
