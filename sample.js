@@ -1,6 +1,6 @@
 const fetch = require('node-fetch')
 const request = require('request');
-require("dotenv").config( {path: "/home/ec2-user/emergencyRoom-ChatBot/.env"} );
+
 const TARGET_URL = 'https://api.line.me/v2/bot/message/reply'
 const TOKEN = process.env.CHANNEL_ACCESS_TOKEN;;
 Request = fetch.Request
@@ -10,7 +10,7 @@ const delay = () => {
   return new Promise(resolve => setTimeout(resolve, randomDelay))
 }
 
-require("dotenv").config( {path: "/home/ec2-user/emergency_room_ChatBot/.env"} );
+require("dotenv").config( {path: "/home/ec2-user/emergencyRoom-ChatBot/.env"} );
 const ID = process.env.DIR_ID;
 const KEY = process.env.DIR_KEY;
 
@@ -79,8 +79,8 @@ const fetchAPI = async (addrData,eventObj,res) => {
   const baseOption = {
       'method': 'GET',
       'headers': {
-      'X-NCP-APIGW-API-KEY-ID': '12rhzhzq7g',
-      'X-NCP-APIGW-API-KEY': 'FhD45P91TxG2820MadrsiPOUjI6bQMJhddnHZIeI'
+      'X-NCP-APIGW-API-KEY-ID': ID,
+      'X-NCP-APIGW-API-KEY': KEY
       },
   };
 

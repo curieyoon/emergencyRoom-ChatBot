@@ -10,7 +10,6 @@ const delay = () => {
   return new Promise(resolve => setTimeout(resolve, randomDelay))
 }
 
-require("dotenv").config( {path: "/home/ec2-user/emergency_room_ChatBot/.env"} );
 const ID = process.env.DIR_ID;
 const KEY = process.env.DIR_KEY;
 
