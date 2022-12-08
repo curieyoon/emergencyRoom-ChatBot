@@ -36,14 +36,18 @@ You can start by adding out channel at https://liff.line.me/1645278921-kWRPP32q/
 
 2. enter your current address (e.g 서천동, 덕영대로) or name of the place near you (e.g 경희대학교)
 
-<img src="assets/2_place.jpg" alt="2_place" width="500"/>
+<img src="assets/2_address.jpg" alt="2_place" width="500"/>
 
 
 3. confirm your location by tapping '네'
 <br />
 
 4. ChatBot will then check ER availability of nearby hospitals. If there's any, it will send the list of the hospitals in ascending order of estimated time to get there from your current location.
+
+<img src="assets/3_.jpg" alt="3" width="500"/> <img src="assets/4_.jpg" alt="4" width="500"/>
     <br />Note that the hospitals are sorted by estimated time instead of absolute distance from your location, which adds even more reliability for your urgency. <br />
+
+To reactivate the ChatBot, enter any chat. 
 
 ## For Developers
 ### Installation
