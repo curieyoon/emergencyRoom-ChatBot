@@ -89,6 +89,7 @@ Distributed under the MIT License. See <a href='License.txt'>License.txt</a> for
 
 
 ## Contact 
+* Daeyeon Kim : rego0723@khu.ac.kr
 * Yerim Hong : hongyeee@khu.ac.kr
 * Curie Yoon : curieyoon@khu.ac.kr
 _last name 알파벳순_
