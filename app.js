@@ -9,7 +9,6 @@ require("dotenv").config( {path: "/home/ec2-user/emergencyRoom-ChatBot/.env"} );
 const KAKAO_KEY = process.env.KAKAO_KEY;
 const TOKEN = process.env.CHANNEL_ACCESS_TOKEN;;
 const domain = process.env.MY_DOMAIN;
-const EMERGENCY_KEY = process.env.EMERGENCY_KEY;
 
 const KAKAO_URL = "https://dapi.kakao.com/v2/local/search/address.json?"
 const KAKAO_PLACE_URL = "https://dapi.kakao.com/v2/local/search/keyword.json?"

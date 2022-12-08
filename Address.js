@@ -5,7 +5,7 @@ globalThis.fetch = fetch.fetch;
 
 var AddressList = new Array();
 
-require("dotenv").config( {path: "/home/ec2-user/prj/emergency_room_ChatBot/.env"} );
+require("dotenv").config( {path: "/home/ec2-user/emergencyRoom-ChatBot/.env"} );
 const KAKAO_KEY = process.env.KAKAO_KEY;
 
 

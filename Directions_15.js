@@ -10,7 +10,6 @@ const delay = () => {
   return new Promise(resolve => setTimeout(resolve, randomDelay))
 }
 
-require("dotenv").config( {path: "/home/ec2-user/emergency_room_ChatBot/.env"} );
 const ID = process.env.DIR_ID;
 const KEY = process.env.DIR_KEY;
 
@@ -44,7 +43,7 @@ async function yes_status(eventObj,res,addrData){
     await addrData.hospital_data.forEach(element => {
       message.push({"type":"location","title":element.name,"address":String(parseInt(element.duration))+"분 | "+String(element.distance)+"KM","longitude":parseFloat(element.x),"latitude":parseFloat(element.y)})
     });
-    message.push({"type":"text","text":"응급상황시 아무채팅이나 입력해주세요."})
+    message.push({"type":"text","text":"응급상황시 아무 채팅이나 입력해주세요."})
     request.post(
       {   
           url: TARGET_URL,

@@ -36,16 +36,20 @@ You can start by adding out channel at https://liff.line.me/1645278921-kWRPP32q/
 
 2. enter your current address (e.g 서천동, 덕영대로) or name of the place near you (e.g 경희대학교)
 
-<img src="assets/2_place.jpg" alt="2_place" width="500"/>
+<img src="assets/2_address.jpg" alt="2_place" width="500"/>
 
 
 3. confirm your location by tapping '네'
 <br />
 
 4. ChatBot will then check ER availability of nearby hospitals. If there's any, it will send the list of the hospitals in ascending order of estimated time to get there from your current location.
+
+<img src="assets/3_.jpg" alt="3" width="500"/> <img src="assets/4_.jpg" alt="4" width="500"/>
     <br />Note that the hospitals are sorted by estimated time instead of absolute distance from your location, which adds even more reliability for your urgency. <br />
 <img src="assets/hospital.png" alt="2_place" width="500"/>
 
+
+To reactivate the ChatBot, enter any chat. 
 
 ## For Developers
 ### Installation
@@ -78,12 +82,12 @@ DIR_KEY = "Your_Naver_Map_API_KEY"
 To import ```.env``` file properly in each module, make sure the line ```require("dotenv").config( {path: "/path/to/.env"} );``` contains the absolute path of your ```.env``` file on your server.
 
 Each key in the ```.env``` indicates:
- * ```CHANNEL_ACCESS_TOCKEN```: 
- * ```KAKAO_KEY```:
- * ```MY_DOMAIN```:
- * ```EMERGENCY_KEY```:
- * ```DIR_ID``` :
- * ```DIR_KEY```:
+ * ```CHANNEL_ACCESS_TOCKEN```: Channel access token on<a href='https://developers.line.biz/en/docs/messaging-api/overview'> LINE MESSENGER API</a>.
+ * ```KAKAO_KEY```: REST API Key on <a href='https://developers.kakao.com/'>KAKAO DEVELOPERS</a>. 
+ * ```MY_DOMAIN```: Your server domain or IPv4 address.
+ * ```EMERGENCY_KEY```: Service Key on data.go.kr
+ * ```DIR_ID``` : API ID on <a href='https://developers.naver.com/main/'>NAVER OPEN API</a>.
+ * ```DIR_KEY```: API KEY on <a href='https://developers.naver.com/main/'>NAVER OPEN API</a>.
 
 
 ## License
@@ -91,6 +95,8 @@ Distributed under the MIT License. See <a href='License.txt'>License.txt</a> for
 
 
 ## Contact 
-* Yerim Hong : hongyeee@khu.ac.kr
-* Curie Yoon : curieyoon@khu.ac.kr
+ * Yerim Hong : hongyeee@khu.ac.kr
+ * Daeyeon Kim : rego0723@khu.ac.kr
+ * Jueun Shin : wnslcosltimo12@khu.ac.kr
+ * Curie Yoon : curieyoon@khu.ac.kr
 _last name 알파벳순_
