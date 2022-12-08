@@ -46,6 +46,8 @@ You can start by adding out channel at https://liff.line.me/1645278921-kWRPP32q/
 
 <img src="assets/3_.jpg" alt="3" width="500"/> <img src="assets/4_.jpg" alt="4" width="500"/>
     <br />Note that the hospitals are sorted by estimated time instead of absolute distance from your location, which adds even more reliability for your urgency. <br />
+<img src="assets/hospital.png" alt="2_place" width="500"/>
+
 
 To reactivate the ChatBot, enter any chat. 
 
