@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2022 , , Yerim Hong, Daeyeon Kim, Jueun Shin, Curie Yoon (last name 알파벳순)
+Copyright (c) 2022 Curie Yoon,Daeyeon Kim, Jueun Shin, Sihwan Kim, Yerim Hong, ,  (last name 알파벳순)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
