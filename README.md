@@ -25,8 +25,9 @@ Searching for available emergency room in a straightforward manner is a multi-st
 
 #### Getting Started
  * Add the ChatBot's LINE channel to your friends' list
-You can start by adding out channel at https://liff.line.me/1645278921-kWRPP32q/?accountId=330zpmoc .<br />
+You can start by adding our channel at https://liff.line.me/1645278921-kWRPP32q/?accountId=330zpmoc or add by QR code. <br />
 
+<img src="assets/curie_QR.png" alt="curie_QR" width="300"><br></br>
 
 #### Find Emergency Room near you
 1. send any message to activate the EmergencyRoom-ChatBot.
@@ -44,10 +45,8 @@ You can start by adding out channel at https://liff.line.me/1645278921-kWRPP32q/
 
 4. ChatBot will then check ER availability of nearby hospitals. If there's any, it will send the list of the hospitals in ascending order of estimated time to get there from your current location.
 
-<img src="assets/3_.jpg" alt="3" width="500"/> <img src="assets/4_.jpg" alt="4" width="500"/>
+<img src="assets/3_.jpg" alt="3" width="400"/> <img src="assets/4_.jpg" alt="4" width="400"/>
     <br />Note that the hospitals are sorted by estimated time instead of absolute distance from your location, which adds even more reliability for your urgency. <br />
-<img src="assets/hospital.png" alt="2_place" width="500"/>
-
 
 To reactivate the ChatBot, enter any chat. 
 
@@ -100,4 +99,3 @@ Distributed under the MIT License. See <a href='License.txt'>License.txt</a> for
  * Daeyeon Kim : rego0723@khu.ac.kr
  * Jueun Shin : wnslcosltimo12@khu.ac.kr
  * Curie Yoon : curieyoon@khu.ac.kr
-_last name 알파벳순_
