@@ -74,8 +74,8 @@ CHANNEL_ACCESS_TOKEN="Your_Line_Messenger_Access_Token"
 KAKAO_KEY="KakaoAK Your_Kakao_API_Private_Key"
 MY_DOMAIN="Your_server_domain_which_this_service_runs_on"
 EMERGENCY_KEY="Your_Hospital_API_Key"
-DIR_ID = "Your_Naver_Map_API_ID"
-DIR_KEY = "Your_Naver_Map_API_KEY"
+DIR_ID="Your_Naver_Map_API_ID"
+DIR_KEY="Your_Naver_Map_API_KEY"
 ```
 
 To import ```.env``` file properly in each module, make sure the line ```require("dotenv").config( {path: "/path/to/.env"} );``` contains the absolute path of your ```.env``` file on your server.
